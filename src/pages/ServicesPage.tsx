@@ -35,7 +35,7 @@ const services = [
     fullDescription: "Whether you've received a job offer or are looking to explore work opportunities in Europe, we provide comprehensive work visa and permit services. Our expertise covers seasonal work permits, highly-skilled worker visas, and employment-based immigration.",
     features: ["Job offer verification", "Work permit application", "Employment contract review", "Skills assessment support", "Renewal & extension help"],
     countries: ["Italy", "Portugal", "Spain", "Greece"],
-    image: null,
+    image: workImg,
   },
   {
     icon: Plane,
@@ -44,7 +44,7 @@ const services = [
     fullDescription: "Planning a trip to Europe? We make the Schengen tourist visa process simple and stress-free. From itinerary planning to document preparation, we ensure your application is complete and compelling for a smooth approval.",
     features: ["Itinerary planning assistance", "Hotel & flight booking guidance", "Travel insurance advice", "Financial proof preparation", "Schengen visa application"],
     countries: ["Schengen", "Italy", "Spain", "Greece"],
-    image: null,
+    image: touristImg,
   },
   {
     icon: FileCheck,
@@ -53,7 +53,7 @@ const services = [
     fullDescription: "For those looking to make Europe their long-term home, we provide expert guidance on residence permit applications. Whether it's based on employment, study, family, or investment, we know the requirements inside out.",
     features: ["Eligibility assessment", "Document compilation", "Application filing", "Biometric appointment booking", "Status tracking & updates"],
     countries: ["Italy", "Portugal", "Greece", "Spain"],
-    image: null,
+    image: residenceImg,
   },
   {
     icon: Building2,
@@ -62,7 +62,7 @@ const services = [
     fullDescription: "Entrepreneurs and investors looking to establish or expand their business in Europe can rely on our specialized visa services. We help with business plan preparation, investment documentation, and navigating the specific requirements of each country's investor visa program.",
     features: ["Business plan review", "Investment documentation", "Company registration guidance", "Golden visa programs", "Entrepreneur visa support"],
     countries: ["Portugal", "Spain", "Italy", "Greece"],
-    image: null,
+    image: businessImg,
   },
 ];
 
