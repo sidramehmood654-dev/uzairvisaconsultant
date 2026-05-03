@@ -4,6 +4,10 @@ import { GraduationCap, Heart, Briefcase, Plane, FileCheck, Building2, ArrowRigh
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import studyImg from "@/assets/study-visa.jpg";
 import familyImg from "@/assets/family-visa.jpg";
+import workImg from "@/assets/work-visa.jpg";
+import touristImg from "@/assets/tourist-visa.jpg";
+import residenceImg from "@/assets/residence-visa.jpg";
+import businessImg from "@/assets/business-visa.jpg";
 
 const services = [
   {
