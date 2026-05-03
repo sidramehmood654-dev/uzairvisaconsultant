@@ -3,6 +3,10 @@ import { GraduationCap, Heart, Briefcase, Plane, FileCheck, Building2 } from "lu
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import studyImg from "@/assets/study-visa.jpg";
 import familyImg from "@/assets/family-visa.jpg";
+import workImg from "@/assets/work-visa.jpg";
+import touristImg from "@/assets/tourist-visa.jpg";
+import residenceImg from "@/assets/residence-visa.jpg";
+import businessImg from "@/assets/business-visa.jpg";
 
 const services = [
   {
@@ -24,28 +28,28 @@ const services = [
     title: "Work Visa",
     description: "Build your career in Europe with our comprehensive work permit and visa processing services.",
     countries: ["Italy", "Portugal", "Spain", "Greece"],
-    image: null,
+    image: workImg,
   },
   {
     icon: Plane,
     title: "Tourist / Visit Visa",
     description: "Explore the beauty of Europe with hassle-free Schengen tourist visa processing.",
     countries: ["Schengen", "Italy", "Spain", "Greece"],
-    image: null,
+    image: touristImg,
   },
   {
     icon: FileCheck,
     title: "Residence Permit",
     description: "Secure your long-term stay in Europe with our residence permit application assistance.",
     countries: ["Italy", "Portugal", "Greece", "Spain"],
-    image: null,
+    image: residenceImg,
   },
   {
     icon: Building2,
     title: "Business / Investor Visa",
     description: "Expand your business to European markets with our investor and entrepreneur visa services.",
     countries: ["Portugal", "Spain", "Italy", "Greece"],
-    image: null,
+    image: businessImg,
   },
 ];
 
