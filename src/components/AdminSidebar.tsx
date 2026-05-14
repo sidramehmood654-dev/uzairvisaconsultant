@@ -1,9 +1,25 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, MessageSquare, Settings, LogOut, Globe } from "lucide-react";
+import {
+  LayoutDashboard,
+  MessageSquare,
+  Settings,
+  LogOut,
+  Globe,
+  FileText,
+  Users,
+  Map,
+  FolderArchive,
+  CreditCard,
+} from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Applications", href: "/admin/applications", icon: FileText },
   { label: "Enquiries", href: "/admin/enquiries", icon: MessageSquare },
+  { label: "Staff", href: "/admin/staff", icon: Users },
+  { label: "Countries", href: "/admin/countries", icon: Map },
+  { label: "Documents Library", href: "/admin/documents", icon: FolderArchive },
+  { label: "Payments", href: "/admin/payments", icon: CreditCard },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
@@ -13,11 +29,12 @@ const AdminSidebar = () => {
 
   const handleLogout = () => {
     sessionStorage.removeItem("admin_logged_in");
+    sessionStorage.removeItem("uvc_role");
     navigate("/admin");
   };
 
   return (
-    <aside className="w-64 min-h-screen bg-card border-r border-border flex flex-col">
+    <aside className="w-64 min-h-screen bg-card border-r border-border flex flex-col sticky top-0 h-screen">
       <div className="p-5 border-b border-border">
         <h2 className="text-lg font-bold text-primary" style={{ fontFamily: "'Playfair Display', serif" }}>
           Admin Panel
@@ -25,7 +42,7 @@ const AdminSidebar = () => {
         <p className="text-xs text-muted-foreground">Uzair Visa Consultancy</p>
       </div>
 
-      <nav className="flex-1 p-3 space-y-1">
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const active = location.pathname === item.href;
           return (
@@ -34,7 +51,7 @@ const AdminSidebar = () => {
               to={item.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                 active
-                  ? "bg-primary/15 text-primary font-semibold"
+                  ? "bg-primary/15 text-primary font-semibold border-l-2 border-primary"
                   : "text-muted-foreground hover:bg-secondary hover:text-foreground"
               }`}
             >
