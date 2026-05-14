@@ -16,9 +16,20 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminEnquiries from "./pages/AdminEnquiries";
 import AdminSettings from "./pages/AdminSettings";
+import AdminApplications from "./pages/AdminApplications";
+import AdminStaff from "./pages/AdminStaff";
+import AdminCountries from "./pages/AdminCountries";
+import AdminDocuments from "./pages/AdminDocuments";
+import AdminPayments from "./pages/AdminPayments";
 import UserSignup from "./pages/UserSignup";
 import UserLogin from "./pages/UserLogin";
 import StaffDashboard from "./pages/StaffDashboard";
+import StaffApplications from "./pages/StaffApplications";
+import ClientDashboard from "./pages/client/ClientDashboard";
+import ClientApply from "./pages/client/ClientApply";
+import ClientDocuments from "./pages/client/ClientDocuments";
+import ClientTrack from "./pages/client/ClientTrack";
+import ClientHistory from "./pages/client/ClientHistory";
 
 const queryClient = new QueryClient();
 
@@ -40,11 +51,29 @@ const App = () => (
             <Route path="/process" element={<ProcessPage />} />
             <Route path="/testimonials" element={<TestimonialsPage />} />
             <Route path="/contact" element={<ContactPage />} />
+
+            {/* Client portal */}
+            <Route path="/client/dashboard" element={<ClientDashboard />} />
+            <Route path="/client/apply" element={<ClientApply />} />
+            <Route path="/client/documents" element={<ClientDocuments />} />
+            <Route path="/client/track" element={<ClientTrack />} />
+            <Route path="/client/history" element={<ClientHistory />} />
+
+            {/* Staff */}
+            <Route path="/staff" element={<StaffDashboard />} />
+            <Route path="/staff/applications" element={<StaffApplications />} />
+
+            {/* Admin */}
             <Route path="/admin" element={<AdminLogin />} />
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/applications" element={<AdminApplications />} />
             <Route path="/admin/enquiries" element={<AdminEnquiries />} />
+            <Route path="/admin/staff" element={<AdminStaff />} />
+            <Route path="/admin/countries" element={<AdminCountries />} />
+            <Route path="/admin/documents" element={<AdminDocuments />} />
+            <Route path="/admin/payments" element={<AdminPayments />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
-            <Route path="/staff" element={<StaffDashboard />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

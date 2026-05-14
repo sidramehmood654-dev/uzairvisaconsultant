@@ -28,8 +28,8 @@ const UserSignup = () => {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     sessionStorage.setItem("uvc_user", "1");
-    toast({ title: "Account created (demo)", description: "Redirecting to homepage..." });
-    setTimeout(() => navigate("/home"), 800);
+    toast({ title: "Account created (demo)", description: "Redirecting to your dashboard..." });
+    setTimeout(() => navigate("/client/dashboard"), 800);
   };
 
   return (
