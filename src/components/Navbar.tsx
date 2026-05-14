@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Phone, Sun, Moon, LogIn, UserPlus, LogOut } from "lucide-react";
+import { Menu, X, Phone, Sun, Moon, LogIn, UserPlus, LogOut, LayoutDashboard } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import logo from "@/assets/logo.jpg";
 
@@ -78,12 +78,20 @@ const Navbar = () => {
           </button>
 
           {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors px-2"
-            >
-              <LogOut className="w-3.5 h-3.5" /> Logout
-            </button>
+            <>
+              <Link
+                to="/client/dashboard"
+                className="flex items-center gap-1.5 text-xs border border-primary/40 text-primary px-3 py-1.5 rounded-lg hover:bg-primary/10 transition-colors"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" /> My Portal
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors px-2"
+              >
+                <LogOut className="w-3.5 h-3.5" /> Logout
+              </button>
+            </>
           ) : (
             <>
               <Link
@@ -143,12 +151,21 @@ const Navbar = () => {
               </Link>
             ))}
             {isLoggedIn ? (
-              <button
-                onClick={() => { handleLogout(); setIsOpen(false); }}
-                className="flex items-center justify-center gap-2 border border-border text-muted-foreground px-5 py-3 rounded-lg text-sm"
-              >
-                <LogOut className="w-4 h-4" /> Logout
-              </button>
+              <>
+                <Link
+                  to="/client/dashboard"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center justify-center gap-2 border border-primary/40 bg-primary/10 text-primary px-5 py-3 rounded-lg text-sm"
+                >
+                  <LayoutDashboard className="w-4 h-4" /> My Portal
+                </Link>
+                <button
+                  onClick={() => { handleLogout(); setIsOpen(false); }}
+                  className="flex items-center justify-center gap-2 border border-border text-muted-foreground px-5 py-3 rounded-lg text-sm"
+                >
+                  <LogOut className="w-4 h-4" /> Logout
+                </button>
+              </>
             ) : (
               <div className="grid grid-cols-2 gap-2">
                 <Link
