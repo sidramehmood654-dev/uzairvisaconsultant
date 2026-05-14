@@ -14,7 +14,7 @@ const UserLogin = () => {
     e.preventDefault();
     sessionStorage.setItem("uvc_user", "1");
     toast({ title: "Welcome back (demo)", description: "Redirecting..." });
-    setTimeout(() => navigate("/home"), 600);
+    setTimeout(() => navigate("/client/dashboard"), 600);
   };
 
   return (
