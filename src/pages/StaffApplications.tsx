@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Briefcase, FileSearch, LogOut, Globe, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -20,6 +20,7 @@ const navItems = [
 
 const StaffApplications = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [q, setQ] = useState("");
   const [filter, setFilter] = useState("all");
 
