@@ -7,10 +7,10 @@ import { useToast } from "@/hooks/use-toast";
 
 const AdminSettings = () => {
   const { toast } = useToast();
-  const [phone, setPhone] = useState("0313 5031850");
+  const [phone, setPhone] = useState("+92 342 6353166");
   const [email, setEmail] = useState("uzairconsultancy@gmail.com");
   const [address, setAddress] = useState("G7 Square Plaza, Sitara Market Islamabad");
-  const [whatsapp, setWhatsapp] = useState("923135031850");
+  const [whatsapp, setWhatsapp] = useState("923426353166");
 
   const handleSave = () => {
     toast({ title: "Settings saved", description: "Changes saved locally (demo only — no backend yet)." });
