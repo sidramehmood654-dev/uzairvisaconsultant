@@ -59,10 +59,10 @@ const ContactPage = () => {
             <div className={`lg:col-span-2 space-y-8 transition-all duration-700 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}>
               {[
                 { icon: MapPin, label: "Visit Us", value: "G7 Square Plaza,\nSitara Market, Islamabad" },
-                { icon: Phone, label: "Call Us", value: "0313 5031850" },
+                { icon: Phone, label: "Call Us", value: "+92 342 6353166" },
                 { icon: Mail, label: "Email Us", value: "uzairconsultancy@gmail.com" },
                 { icon: Clock, label: "Working Hours", value: "Mon – Sat: 9:00 AM – 7:00 PM" },
-                { icon: MessageCircle, label: "WhatsApp", value: "0313 5031850" },
+                { icon: MessageCircle, label: "WhatsApp", value: "+92 342 6353166" },
               ].map((item, i) => (
                 <div
                   key={item.label}
