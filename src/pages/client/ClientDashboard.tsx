@@ -1,26 +1,38 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Clock, CheckCircle2, AlertCircle, PlusCircle } from "lucide-react";
 import ClientLayout from "@/components/ClientLayout";
-import { myApplications } from "@/data/mockApplications";
+import { listMyApplications } from "@/lib/applications";
+import { useAuth } from "@/hooks/useAuth";
 
 const statusBadge: Record<string, string> = {
-  "Under Review": "bg-sky-500/15 text-sky-400 border-sky-500/30",
-  "Docs Missing": "bg-amber-500/15 text-amber-400 border-amber-500/30",
-  Approved: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  Submitted: "bg-primary/15 text-primary border-primary/30",
-  Rejected: "bg-destructive/15 text-destructive border-destructive/30",
+  pending: "bg-primary/15 text-primary border-primary/30",
+  under_review: "bg-sky-500/15 text-sky-400 border-sky-500/30",
+  docs_missing: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+  approved: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+  rejected: "bg-destructive/15 text-destructive border-destructive/30",
 };
 
 const ClientDashboard = () => {
+  const { user } = useAuth();
+  const [apps, setApps] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    listMyApplications().then(setApps).finally(() => setLoading(false));
+  }, []);
+
   const stats = [
-    { label: "Active Applications", value: myApplications.filter((a) => a.status !== "Approved" && a.status !== "Rejected").length, icon: FileText, accent: "border-t-primary" },
-    { label: "Approved", value: myApplications.filter((a) => a.status === "Approved").length, icon: CheckCircle2, accent: "border-t-emerald-500" },
-    { label: "In Review", value: myApplications.filter((a) => a.status === "Under Review").length, icon: Clock, accent: "border-t-sky-500" },
-    { label: "Action Needed", value: myApplications.filter((a) => a.status === "Docs Missing").length, icon: AlertCircle, accent: "border-t-amber-500" },
+    { label: "Active Applications", value: apps.filter((a) => !["approved", "rejected"].includes(a.status)).length, icon: FileText, accent: "border-t-primary" },
+    { label: "Approved", value: apps.filter((a) => a.status === "approved").length, icon: CheckCircle2, accent: "border-t-emerald-500" },
+    { label: "In Review", value: apps.filter((a) => a.status === "under_review").length, icon: Clock, accent: "border-t-sky-500" },
+    { label: "Action Needed", value: apps.filter((a) => a.status === "docs_missing").length, icon: AlertCircle, accent: "border-t-amber-500" },
   ];
 
+  const name = (user?.user_metadata as any)?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "there";
+
   return (
-    <ClientLayout title="Welcome back, Sidra 👋" subtitle="Here's a summary of your visa applications">
+    <ClientLayout title={`Welcome back, ${name} 👋`} subtitle="Here's a summary of your visa applications">
       <div className="space-y-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((s) => (
@@ -47,21 +59,21 @@ const ClientDashboard = () => {
               </Link>
             </div>
             <div className="divide-y divide-border">
-              {myApplications.map((a) => (
+              {loading && <p className="p-8 text-center text-sm text-muted-foreground">Loading…</p>}
+              {!loading && apps.map((a) => (
                 <div key={a.id} className="flex items-center justify-between p-5 hover:bg-secondary/40 transition-colors">
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">{a.flag}</span>
-                      <p className="font-medium text-foreground">{a.country} — {a.visa}</p>
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">{a.id} · Submitted {a.submitted}</p>
+                    <p className="font-medium text-foreground">{a.destination_country} — {a.visa_type}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {a.id.slice(0, 8).toUpperCase()} · Submitted {new Date(a.created_at).toLocaleDateString()}
+                    </p>
                   </div>
-                  <span className={`text-[11px] px-2.5 py-1 rounded-full border ${statusBadge[a.status]}`}>
-                    {a.status}
+                  <span className={`text-[11px] px-2.5 py-1 rounded-full border ${statusBadge[a.status] ?? statusBadge.pending}`}>
+                    {a.status.replace("_", " ")}
                   </span>
                 </div>
               ))}
-              {myApplications.length === 0 && (
+              {!loading && apps.length === 0 && (
                 <p className="p-8 text-center text-sm text-muted-foreground">No applications yet.</p>
               )}
             </div>

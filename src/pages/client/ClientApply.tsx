@@ -6,18 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { createApplication } from "@/lib/applications";
+import { useAuth } from "@/hooks/useAuth";
 
 const stepsList = ["Visa Details", "Personal Info", "Background", "Review"];
 
 const ClientApply = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     country: "",
     visaType: "",
     travelDate: "",
     duration: "",
-    fullName: "Sidra Mehmood",
+    fullName: (user?.user_metadata as any)?.full_name || "",
     dob: "",
     passport: "",
     nationality: "Pakistani",
@@ -31,11 +35,34 @@ const ClientApply = () => {
   const next = () => setStep((s) => Math.min(s + 1, 4));
   const back = () => setStep((s) => Math.max(s - 1, 1));
 
-  const submit = () => {
-    toast.success("Application submitted (demo)", {
-      description: "Your consultant will review it shortly.",
-    });
-    setTimeout(() => navigate("/client/track"), 800);
+  const submit = async () => {
+    if (!form.country || !form.visaType || !form.fullName || !form.passport) {
+      toast.error("Please fill required fields", { description: "Country, visa type, full name and passport are required." });
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await createApplication({
+        full_name: form.fullName,
+        passport_number: form.passport,
+        destination_country: form.country,
+        visa_type: form.visaType,
+        travel_date: form.travelDate || null,
+        duration: form.duration || null,
+        dob: form.dob || null,
+        nationality: form.nationality || null,
+        address: form.address || null,
+        occupation: form.occupation || null,
+        employer: form.employer || null,
+        purpose: form.purpose || null,
+      });
+      toast.success("Application submitted", { description: "Your consultant will review it shortly." });
+      navigate("/client/track");
+    } catch (e: any) {
+      toast.error("Submission failed", { description: e?.message ?? "Please try again." });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -167,8 +194,8 @@ const ClientApply = () => {
                 Continue <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             ) : (
-              <Button onClick={submit} className="flex-1 bg-gradient-gold text-primary-foreground font-semibold">
-                Submit Application
+              <Button onClick={submit} disabled={submitting} className="flex-1 bg-gradient-gold text-primary-foreground font-semibold">
+                {submitting ? "Submitting..." : "Submit Application"}
               </Button>
             )}
           </div>

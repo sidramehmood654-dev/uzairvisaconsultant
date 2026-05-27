@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -11,6 +11,7 @@ import {
   Bell,
 } from "lucide-react";
 import logo from "@/assets/logo.jpg";
+import { useAuth } from "@/hooks/useAuth";
 
 const items = [
   { to: "/client/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -22,15 +23,15 @@ const items = [
 
 const ClientLayout = ({ children, title, subtitle }: { children: ReactNode; title: string; subtitle?: string }) => {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
-  useEffect(() => {
-    if (sessionStorage.getItem("uvc_user") !== "1") navigate("/login");
-  }, [navigate]);
-
-  const logout = () => {
-    sessionStorage.removeItem("uvc_user");
+  const logout = async () => {
+    await signOut();
     navigate("/");
   };
+
+  const displayName = (user?.user_metadata as any)?.full_name || user?.email?.split("@")[0] || "Applicant";
+  const initials = displayName.split(" ").map((s: string) => s[0]).join("").slice(0, 2).toUpperCase();
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
@@ -100,10 +101,10 @@ const ClientLayout = ({ children, title, subtitle }: { children: ReactNode; titl
             </button>
             <div className="flex items-center gap-2">
               <div className="w-9 h-9 rounded-full bg-gradient-gold text-primary-foreground flex items-center justify-center font-semibold text-sm">
-                SM
+                {initials}
               </div>
               <div className="hidden sm:block">
-                <p className="text-sm font-medium leading-tight">Sidra Mehmood</p>
+                <p className="text-sm font-medium leading-tight">{displayName}</p>
                 <p className="text-[10px] text-muted-foreground">Applicant</p>
               </div>
             </div>
