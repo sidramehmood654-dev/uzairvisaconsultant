@@ -14,7 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      payments: {
+        Row: {
+          amount: number
+          application_id: string
+          created_at: string
+          id: string
+          status: string
+          stripe_payment_intent_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          application_id: string
+          created_at?: string
+          id?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          application_id?: string
+          created_at?: string
+          id?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "visa_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visa_applications: {
+        Row: {
+          address: string | null
+          created_at: string
+          destination_country: string
+          dob: string | null
+          duration: string | null
+          employer: string | null
+          full_name: string
+          id: string
+          nationality: string | null
+          occupation: string | null
+          passport_number: string
+          purpose: string | null
+          status: string
+          travel_date: string | null
+          updated_at: string
+          user_id: string
+          visa_type: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          destination_country: string
+          dob?: string | null
+          duration?: string | null
+          employer?: string | null
+          full_name: string
+          id?: string
+          nationality?: string | null
+          occupation?: string | null
+          passport_number: string
+          purpose?: string | null
+          status?: string
+          travel_date?: string | null
+          updated_at?: string
+          user_id: string
+          visa_type: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          destination_country?: string
+          dob?: string | null
+          duration?: string | null
+          employer?: string | null
+          full_name?: string
+          id?: string
+          nationality?: string | null
+          occupation?: string | null
+          passport_number?: string
+          purpose?: string | null
+          status?: string
+          travel_date?: string | null
+          updated_at?: string
+          user_id?: string
+          visa_type?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
