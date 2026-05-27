@@ -194,8 +194,8 @@ const ClientApply = () => {
                 Continue <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             ) : (
-              <Button onClick={submit} className="flex-1 bg-gradient-gold text-primary-foreground font-semibold">
-                Submit Application
+              <Button onClick={submit} disabled={submitting} className="flex-1 bg-gradient-gold text-primary-foreground font-semibold">
+                {submitting ? "Submitting..." : "Submit Application"}
               </Button>
             )}
           </div>
