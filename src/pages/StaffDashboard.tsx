@@ -170,14 +170,9 @@ const StaffDashboard = () => {
   const [selected, setSelected] = useState<App | null>(null);
   const [reviewNote, setReviewNote] = useState("");
 
-  useEffect(() => {
-    if (sessionStorage.getItem("uvc_role") !== "staff") {
-      navigate("/admin");
-    }
-  }, [navigate]);
-
-  const logout = () => {
-    sessionStorage.removeItem("uvc_role");
+  const logout = async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
+    await supabase.auth.signOut();
     navigate("/admin");
   };
 
