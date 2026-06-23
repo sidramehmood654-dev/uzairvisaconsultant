@@ -52,14 +52,24 @@ export const visaApplicationSchema = z.object({
 export type VisaApplicationInput = z.infer<typeof visaApplicationSchema>;
 
 // POST /api/applications — create
-export async function createApplication(input: VisaApplicationInput) {
+export async function createApplication(input: unknown) {
   const parsed = visaApplicationSchema.parse(input); // throws ZodError if invalid
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const payload = {
-    ...parsed,
+    full_name: parsed.full_name,
     passport_number: parsed.passport_number.toUpperCase(),
+    destination_country: parsed.destination_country as string,
+    visa_type: parsed.visa_type as string,
+    travel_date: parsed.travel_date ?? null,
+    duration: parsed.duration ?? null,
+    dob: parsed.dob ?? null,
+    nationality: parsed.nationality ?? null,
+    address: parsed.address ?? null,
+    occupation: parsed.occupation ?? null,
+    employer: parsed.employer ?? null,
+    purpose: parsed.purpose ?? null,
     user_id: user.id,
   };
 
