@@ -153,7 +153,7 @@ const ClientApply = () => {
                 Visa Details
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Destination Country">
+                <Field label="Destination Country" error={errors.country}>
                   <select className="input-base" value={form.country} onChange={(e) => update("country", e.target.value)}>
                     <option value="">Select…</option>
                     <option>Italy</option>
@@ -162,7 +162,7 @@ const ClientApply = () => {
                     <option>Spain</option>
                   </select>
                 </Field>
-                <Field label="Visa Type">
+                <Field label="Visa Type" error={errors.visaType}>
                   <select className="input-base" value={form.visaType} onChange={(e) => update("visaType", e.target.value)}>
                     <option value="">Select…</option>
                     <option>Study Visa</option>
@@ -173,11 +173,11 @@ const ClientApply = () => {
                     <option>Residence Visa</option>
                   </select>
                 </Field>
-                <Field label="Intended Travel Date">
+                <Field label="Intended Travel Date" error={errors.travelDate}>
                   <Input type="date" value={form.travelDate} onChange={(e) => update("travelDate", e.target.value)} />
                 </Field>
-                <Field label="Duration of Stay">
-                  <Input placeholder="e.g. 2 years" value={form.duration} onChange={(e) => update("duration", e.target.value)} />
+                <Field label="Duration of Stay" error={errors.duration}>
+                  <Input placeholder="e.g. 2 years" maxLength={60} value={form.duration} onChange={(e) => update("duration", e.target.value)} />
                 </Field>
               </div>
             </>
@@ -189,12 +189,12 @@ const ClientApply = () => {
                 Personal Information
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Full Name"><Input value={form.fullName} onChange={(e) => update("fullName", e.target.value)} /></Field>
-                <Field label="Date of Birth"><Input type="date" value={form.dob} onChange={(e) => update("dob", e.target.value)} /></Field>
-                <Field label="Passport Number"><Input value={form.passport} onChange={(e) => update("passport", e.target.value)} placeholder="AB1234567" /></Field>
-                <Field label="Nationality"><Input value={form.nationality} onChange={(e) => update("nationality", e.target.value)} /></Field>
+                <Field label="Full Name" error={errors.fullName}><Input maxLength={100} value={form.fullName} onChange={(e) => update("fullName", e.target.value)} /></Field>
+                <Field label="Date of Birth" error={errors.dob}><Input type="date" value={form.dob} onChange={(e) => update("dob", e.target.value)} /></Field>
+                <Field label="Passport Number" error={errors.passport}><Input maxLength={9} value={form.passport} onChange={(e) => update("passport", e.target.value.toUpperCase())} placeholder="AB1234567" /></Field>
+                <Field label="Nationality" error={errors.nationality}><Input maxLength={60} value={form.nationality} onChange={(e) => update("nationality", e.target.value)} /></Field>
                 <div className="sm:col-span-2">
-                  <Field label="Current Address"><Textarea rows={2} value={form.address} onChange={(e) => update("address", e.target.value)} /></Field>
+                  <Field label="Current Address" error={errors.address}><Textarea rows={2} maxLength={300} value={form.address} onChange={(e) => update("address", e.target.value)} /></Field>
                 </div>
               </div>
             </>
@@ -206,10 +206,10 @@ const ClientApply = () => {
                 Background & Purpose
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
-                <Field label="Occupation"><Input value={form.occupation} onChange={(e) => update("occupation", e.target.value)} /></Field>
-                <Field label="Employer / Institution"><Input value={form.employer} onChange={(e) => update("employer", e.target.value)} /></Field>
+                <Field label="Occupation" error={errors.occupation}><Input maxLength={100} value={form.occupation} onChange={(e) => update("occupation", e.target.value)} /></Field>
+                <Field label="Employer / Institution" error={errors.employer}><Input maxLength={120} value={form.employer} onChange={(e) => update("employer", e.target.value)} /></Field>
                 <div className="sm:col-span-2">
-                  <Field label="Purpose of Travel"><Textarea rows={4} value={form.purpose} onChange={(e) => update("purpose", e.target.value)} placeholder="Briefly describe your reason for travel" /></Field>
+                  <Field label="Purpose of Travel" error={errors.purpose}><Textarea rows={4} maxLength={1000} value={form.purpose} onChange={(e) => update("purpose", e.target.value)} placeholder="Briefly describe your reason for travel" /></Field>
                 </div>
               </div>
             </>
