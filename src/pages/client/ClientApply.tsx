@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, ArrowLeft, Check, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, Check, CheckCircle2, AlertCircle } from "lucide-react";
+import { ZodError } from "zod";
 import ClientLayout from "@/components/ClientLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { createApplication } from "@/lib/applications";
+import { createApplication, visaApplicationSchema } from "@/lib/applications";
 import { useAuth } from "@/hooks/useAuth";
 
 const stepsList = ["Visa Details", "Personal Info", "Background", "Review"];
