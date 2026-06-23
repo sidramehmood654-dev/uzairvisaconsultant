@@ -261,10 +261,11 @@ const ClientApply = () => {
   );
 };
 
-const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
+const Field = ({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) => (
   <div className="space-y-1.5">
     <label className="text-xs text-muted-foreground uppercase tracking-wider">{label}</label>
     {children}
+    {error && <p className="text-[11px] text-destructive flex items-center gap-1"><AlertCircle className="w-3 h-3" />{error}</p>}
   </div>
 );
 
