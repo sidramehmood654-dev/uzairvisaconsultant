@@ -1,24 +1,77 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Lock, User, Shield, Headphones } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Lock, User, Shield, Headphones, AlertCircle } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+
+const schema = z.object({
+  email: z.string().trim().email("Enter a valid email").max(255),
+  password: z.string().min(6, "Password must be at least 6 characters").max(128),
+});
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"admin" | "staff">("admin");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation() as any;
 
-  const handleLogin = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (location.state?.denied) {
+      setError("Your account does not have access to that area.");
+    }
+  }, [location.state]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (role === "admin") {
-      sessionStorage.setItem("admin_logged_in", "true");
-      sessionStorage.setItem("uvc_role", "admin");
-      navigate("/admin/dashboard");
-    } else {
-      sessionStorage.setItem("uvc_role", "staff");
-      navigate("/staff");
+    setError(null);
+
+    const parsed = schema.safeParse({ email, password });
+    if (!parsed.success) {
+      setError(parsed.error.errors[0].message);
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: parsed.data.email,
+        password: parsed.data.password,
+      });
+      if (signInError || !data.user) {
+        setError("Invalid email or password.");
+        return;
+      }
+
+      const { data: roleRows, error: roleError } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", data.user.id);
+
+      if (roleError) {
+        setError("Could not verify your role. Please try again.");
+        await supabase.auth.signOut();
+        return;
+      }
+
+      const userRoles = (roleRows ?? []).map((r: any) => r.role);
+      if (!userRoles.includes(role)) {
+        setError(`Your account is not authorised as ${role}.`);
+        await supabase.auth.signOut();
+        return;
+      }
+
+      toast.success(`Signed in as ${role}`);
+      navigate(role === "admin" ? "/admin/dashboard" : "/staff", { replace: true });
+    } catch (err: any) {
+      setError(err?.message ?? "Sign in failed.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -66,6 +119,13 @@ const AdminLogin = () => {
             </div>
           </div>
 
+          {error && (
+            <div className="flex items-start gap-2 bg-destructive/10 border border-destructive/30 rounded-lg p-3 text-xs text-destructive">
+              <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
           <div className="space-y-2">
             <label className="text-sm text-muted-foreground">Email</label>
             <div className="relative">
@@ -76,6 +136,8 @@ const AdminLogin = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-10"
+                required
+                maxLength={255}
               />
             </div>
           </div>
@@ -89,14 +151,21 @@ const AdminLogin = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="pl-10"
+                required
+                minLength={6}
+                maxLength={128}
               />
             </div>
           </div>
-          <Button type="submit" className="w-full bg-gradient-gold text-primary-foreground font-semibold">
-            Sign In as {role === "admin" ? "Admin" : "Staff"}
+          <Button
+            type="submit"
+            disabled={submitting}
+            className="w-full bg-gradient-gold text-primary-foreground font-semibold"
+          >
+            {submitting ? "Verifying…" : `Sign In as ${role === "admin" ? "Admin" : "Staff"}`}
           </Button>
           <p className="text-xs text-center text-muted-foreground">
-            Demo: any credentials work. Real role-based auth coming via Lovable Cloud.
+            Only accounts granted the {role} role in the database can access this area.
           </p>
           <Link to="/" className="block text-xs text-center text-muted-foreground hover:text-primary">
             ← Back to website

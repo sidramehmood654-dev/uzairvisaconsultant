@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/hooks/useTheme";
 import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import RoleProtectedRoute from "@/components/RoleProtectedRoute";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import AboutPage from "./pages/AboutPage";
@@ -64,20 +65,21 @@ const App = () => (
               <Route path="/client/track" element={<ProtectedRoute><ClientTrack /></ProtectedRoute>} />
               <Route path="/client/history" element={<ProtectedRoute><ClientHistory /></ProtectedRoute>} />
 
-              {/* Staff */}
-              <Route path="/staff" element={<StaffDashboard />} />
-              <Route path="/staff/applications" element={<StaffApplications />} />
+              {/* Staff (role: staff or admin) */}
+              <Route path="/staff" element={<RoleProtectedRoute roles={["staff", "admin"]}><StaffDashboard /></RoleProtectedRoute>} />
+              <Route path="/staff/applications" element={<RoleProtectedRoute roles={["staff", "admin"]}><StaffApplications /></RoleProtectedRoute>} />
 
-              {/* Admin */}
+              {/* Admin login is public; everything else requires admin role */}
               <Route path="/admin" element={<AdminLogin />} />
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/applications" element={<AdminApplications />} />
-              <Route path="/admin/enquiries" element={<AdminEnquiries />} />
-              <Route path="/admin/staff" element={<AdminStaff />} />
-              <Route path="/admin/countries" element={<AdminCountries />} />
-              <Route path="/admin/documents" element={<AdminDocuments />} />
-              <Route path="/admin/payments" element={<AdminPayments />} />
-              <Route path="/admin/settings" element={<AdminSettings />} />
+              <Route path="/admin/dashboard" element={<RoleProtectedRoute roles={["admin"]}><AdminDashboard /></RoleProtectedRoute>} />
+              <Route path="/admin/applications" element={<RoleProtectedRoute roles={["admin"]}><AdminApplications /></RoleProtectedRoute>} />
+              <Route path="/admin/enquiries" element={<RoleProtectedRoute roles={["admin"]}><AdminEnquiries /></RoleProtectedRoute>} />
+              <Route path="/admin/staff" element={<RoleProtectedRoute roles={["admin"]}><AdminStaff /></RoleProtectedRoute>} />
+              <Route path="/admin/countries" element={<RoleProtectedRoute roles={["admin"]}><AdminCountries /></RoleProtectedRoute>} />
+              <Route path="/admin/documents" element={<RoleProtectedRoute roles={["admin"]}><AdminDocuments /></RoleProtectedRoute>} />
+              <Route path="/admin/payments" element={<RoleProtectedRoute roles={["admin"]}><AdminPayments /></RoleProtectedRoute>} />
+              <Route path="/admin/settings" element={<RoleProtectedRoute roles={["admin"]}><AdminSettings /></RoleProtectedRoute>} />
+
 
               <Route path="*" element={<NotFound />} />
             </Routes>

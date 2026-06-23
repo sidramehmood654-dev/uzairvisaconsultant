@@ -27,9 +27,9 @@ const AdminSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("admin_logged_in");
-    sessionStorage.removeItem("uvc_role");
+  const handleLogout = async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
+    await supabase.auth.signOut();
     navigate("/admin");
   };
 
