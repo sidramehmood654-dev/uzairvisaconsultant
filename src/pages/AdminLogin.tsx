@@ -44,7 +44,7 @@ const AdminLogin = () => {
         password: parsed.data.password,
       });
       if (signInError || !data.user) {
-        setError("Invalid email or password.");
+        setError("Password sign-in failed. Check the email and password, or reset the password for this account.");
         return;
       }
 
@@ -61,7 +61,7 @@ const AdminLogin = () => {
 
       const userRoles = (roleRows ?? []).map((r: any) => r.role);
       if (!userRoles.includes(role)) {
-        setError(`Your account is not authorised as ${role}.`);
+        setError(`Email and password are correct, but this account is not authorised as ${role}. Ask an admin to grant the ${role} role.`);
         await supabase.auth.signOut();
         return;
       }
