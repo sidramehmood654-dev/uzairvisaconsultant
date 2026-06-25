@@ -13,6 +13,7 @@ const schema = z.object({
 });
 
 const AdminLogin = () => {
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"admin" | "staff">("admin");
@@ -27,7 +28,7 @@ const AdminLogin = () => {
     }
   }, [location.state]);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -39,6 +40,56 @@ const AdminLogin = () => {
 
     setSubmitting(true);
     try {
+      if (mode === "signup") {
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email: parsed.data.email,
+          password: parsed.data.password,
+          options: { emailRedirectTo: `${window.location.origin}/admin` },
+        });
+        if (signUpError) {
+          setError(signUpError.message);
+          return;
+        }
+
+        // If email confirmation is required, no session yet
+        if (!signUpData.session) {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email: parsed.data.email,
+            password: parsed.data.password,
+          });
+          if (signInError) {
+            toast.success("Account created. Please confirm your email, then sign in.");
+            setMode("signin");
+            return;
+          }
+        }
+
+        const { data: granted, error: rpcError } = await supabase.rpc("bootstrap_role", { _role: role });
+        if (rpcError) {
+          setError(`Account created but role could not be assigned: ${rpcError.message}`);
+          await supabase.auth.signOut();
+          return;
+        }
+
+        if (granted === "granted") {
+          toast.success(`Account created and granted ${role} access.`);
+          navigate(role === "admin" ? "/admin/dashboard" : "/staff", { replace: true });
+          return;
+        }
+
+        if (granted === "role_already_assigned") {
+          setError(
+            `An ${role} account already exists. New ${role} accounts must be granted by an existing admin. Your account was created — ask an admin to assign the ${role} role.`,
+          );
+          await supabase.auth.signOut();
+          return;
+        }
+
+        setError("Could not complete signup. Please try again.");
+        await supabase.auth.signOut();
+        return;
+      }
+
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email: parsed.data.email,
         password: parsed.data.password,
@@ -69,11 +120,12 @@ const AdminLogin = () => {
       toast.success(`Signed in as ${role}`);
       navigate(role === "admin" ? "/admin/dashboard" : "/staff", { replace: true });
     } catch (err: any) {
-      setError(err?.message ?? "Sign in failed.");
+      setError(err?.message ?? "Request failed.");
     } finally {
       setSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
