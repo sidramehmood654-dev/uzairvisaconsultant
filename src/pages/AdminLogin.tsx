@@ -140,7 +140,24 @@ const AdminLogin = () => {
           <p className="text-muted-foreground text-sm mt-1">Uzair Visa Consultancy — Staff & Admin only</p>
         </div>
 
-        <form onSubmit={handleLogin} className="bg-card border border-border rounded-xl p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 space-y-4">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-muted/40 rounded-lg">
+            <button
+              type="button"
+              onClick={() => { setMode("signin"); setError(null); }}
+              className={`text-xs font-medium py-2 rounded-md transition-all ${mode === "signin" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => { setMode("signup"); setError(null); }}
+              className={`text-xs font-medium py-2 rounded-md transition-all ${mode === "signup" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}
+            >
+              Create Account
+            </button>
+          </div>
+
           <div className="space-y-2">
             <label className="text-xs text-muted-foreground uppercase tracking-wider">Sign in as</label>
             <div className="grid grid-cols-2 gap-2">
