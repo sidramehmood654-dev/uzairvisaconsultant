@@ -13,6 +13,7 @@ const schema = z.object({
 });
 
 const AdminLogin = () => {
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"admin" | "staff">("admin");
@@ -27,7 +28,7 @@ const AdminLogin = () => {
     }
   }, [location.state]);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -39,6 +40,56 @@ const AdminLogin = () => {
 
     setSubmitting(true);
     try {
+      if (mode === "signup") {
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email: parsed.data.email,
+          password: parsed.data.password,
+          options: { emailRedirectTo: `${window.location.origin}/admin` },
+        });
+        if (signUpError) {
+          setError(signUpError.message);
+          return;
+        }
+
+        // If email confirmation is required, no session yet
+        if (!signUpData.session) {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email: parsed.data.email,
+            password: parsed.data.password,
+          });
+          if (signInError) {
+            toast.success("Account created. Please confirm your email, then sign in.");
+            setMode("signin");
+            return;
+          }
+        }
+
+        const { data: granted, error: rpcError } = await supabase.rpc("bootstrap_role", { _role: role });
+        if (rpcError) {
+          setError(`Account created but role could not be assigned: ${rpcError.message}`);
+          await supabase.auth.signOut();
+          return;
+        }
+
+        if (granted === "granted") {
+          toast.success(`Account created and granted ${role} access.`);
+          navigate(role === "admin" ? "/admin/dashboard" : "/staff", { replace: true });
+          return;
+        }
+
+        if (granted === "role_already_assigned") {
+          setError(
+            `An ${role} account already exists. New ${role} accounts must be granted by an existing admin. Your account was created — ask an admin to assign the ${role} role.`,
+          );
+          await supabase.auth.signOut();
+          return;
+        }
+
+        setError("Could not complete signup. Please try again.");
+        await supabase.auth.signOut();
+        return;
+      }
+
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email: parsed.data.email,
         password: parsed.data.password,
@@ -69,11 +120,12 @@ const AdminLogin = () => {
       toast.success(`Signed in as ${role}`);
       navigate(role === "admin" ? "/admin/dashboard" : "/staff", { replace: true });
     } catch (err: any) {
-      setError(err?.message ?? "Sign in failed.");
+      setError(err?.message ?? "Request failed.");
     } finally {
       setSubmitting(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -88,7 +140,24 @@ const AdminLogin = () => {
           <p className="text-muted-foreground text-sm mt-1">Uzair Visa Consultancy — Staff & Admin only</p>
         </div>
 
-        <form onSubmit={handleLogin} className="bg-card border border-border rounded-xl p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 space-y-4">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-muted/40 rounded-lg">
+            <button
+              type="button"
+              onClick={() => { setMode("signin"); setError(null); }}
+              className={`text-xs font-medium py-2 rounded-md transition-all ${mode === "signin" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => { setMode("signup"); setError(null); }}
+              className={`text-xs font-medium py-2 rounded-md transition-all ${mode === "signup" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground"}`}
+            >
+              Create Account
+            </button>
+          </div>
+
           <div className="space-y-2">
             <label className="text-xs text-muted-foreground uppercase tracking-wider">Sign in as</label>
             <div className="grid grid-cols-2 gap-2">
@@ -162,15 +231,18 @@ const AdminLogin = () => {
             disabled={submitting}
             className="w-full bg-gradient-gold text-primary-foreground font-semibold"
           >
-            {submitting ? "Verifying…" : `Sign In as ${role === "admin" ? "Admin" : "Staff"}`}
+            {submitting ? (mode === "signup" ? "Creating…" : "Verifying…") : mode === "signup" ? `Create ${role === "admin" ? "Admin" : "Staff"} Account` : `Sign In as ${role === "admin" ? "Admin" : "Staff"}`}
           </Button>
           <p className="text-xs text-center text-muted-foreground">
-            Only accounts granted the {role} role in the database can access this area.
+            {mode === "signup"
+              ? `The first ${role} account is auto-approved. Later ${role} accounts must be granted by an existing admin.`
+              : `Only accounts granted the ${role} role can access this area.`}
           </p>
           <Link to="/" className="block text-xs text-center text-muted-foreground hover:text-primary">
             ← Back to website
           </Link>
         </form>
+
       </div>
     </div>
   );
