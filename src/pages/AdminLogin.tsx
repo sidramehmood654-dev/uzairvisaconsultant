@@ -231,15 +231,18 @@ const AdminLogin = () => {
             disabled={submitting}
             className="w-full bg-gradient-gold text-primary-foreground font-semibold"
           >
-            {submitting ? "Verifying…" : `Sign In as ${role === "admin" ? "Admin" : "Staff"}`}
+            {submitting ? (mode === "signup" ? "Creating…" : "Verifying…") : mode === "signup" ? `Create ${role === "admin" ? "Admin" : "Staff"} Account` : `Sign In as ${role === "admin" ? "Admin" : "Staff"}`}
           </Button>
           <p className="text-xs text-center text-muted-foreground">
-            Only accounts granted the {role} role in the database can access this area.
+            {mode === "signup"
+              ? `The first ${role} account is auto-approved. Later ${role} accounts must be granted by an existing admin.`
+              : `Only accounts granted the ${role} role can access this area.`}
           </p>
           <Link to="/" className="block text-xs text-center text-muted-foreground hover:text-primary">
             ← Back to website
           </Link>
         </form>
+
       </div>
     </div>
   );
