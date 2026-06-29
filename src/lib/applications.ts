@@ -116,3 +116,24 @@ export async function getApplication(id: string) {
   if (error) throw error;
   return data;
 }
+
+// PATCH /api/applications/[id]/status — staff/admin only (RLS enforced)
+export async function updateApplicationStatus(
+  id: string,
+  status: "pending" | "under_review" | "docs_missing" | "approved" | "rejected",
+) {
+  const { data, error } = await supabase
+    .from("visa_applications")
+    .update({ status })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
