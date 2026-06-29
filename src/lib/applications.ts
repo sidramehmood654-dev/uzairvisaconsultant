@@ -131,9 +131,3 @@ export async function updateApplicationStatus(
   if (error) throw error;
   return data;
 }
-    .select("*")
-    .eq("id", id)
-    .maybeSingle();
-  if (error) throw error;
-  return data;
-}
