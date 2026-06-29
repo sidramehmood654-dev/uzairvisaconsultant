@@ -174,7 +174,13 @@ const ClientApply = () => {
                   </select>
                 </Field>
                 <Field label="Intended Travel Date" error={errors.travelDate}>
-                  <Input type="date" value={form.travelDate} onChange={(e) => update("travelDate", e.target.value)} />
+                  <Input
+                    type="date"
+                    min={new Date().toISOString().split("T")[0]}
+                    max={`${new Date().getFullYear() + 5}-12-31`}
+                    value={form.travelDate}
+                    onChange={(e) => update("travelDate", e.target.value)}
+                  />
                 </Field>
                 <Field label="Duration of Stay" error={errors.duration}>
                   <Input placeholder="e.g. 2 years" maxLength={60} value={form.duration} onChange={(e) => update("duration", e.target.value)} />
