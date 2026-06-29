@@ -26,10 +26,14 @@ export const visaApplicationSchema = z.object({
     .string()
     .optional()
     .nullable()
-    .refine(
-      (v) => !v || new Date(v) >= new Date(new Date().toDateString()),
-      "Travel date must be today or in the future",
-    ),
+    .refine((v) => {
+      if (!v) return true;
+      const d = new Date(v);
+      if (isNaN(d.getTime())) return false;
+      const today = new Date(new Date().toDateString());
+      const maxYear = new Date().getFullYear() + 5;
+      return d >= today && d.getFullYear() <= maxYear;
+    }, `Travel date must be today or in the future (and within the next 5 years)`),
   duration: z.string().trim().max(60).optional().nullable(),
   dob: z
     .string()
