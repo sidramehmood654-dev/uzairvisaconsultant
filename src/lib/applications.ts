@@ -26,10 +26,14 @@ export const visaApplicationSchema = z.object({
     .string()
     .optional()
     .nullable()
-    .refine(
-      (v) => !v || new Date(v) >= new Date(new Date().toDateString()),
-      "Travel date must be today or in the future",
-    ),
+    .refine((v) => {
+      if (!v) return true;
+      const d = new Date(v);
+      if (isNaN(d.getTime())) return false;
+      const today = new Date(new Date().toDateString());
+      const maxYear = new Date().getFullYear() + 5;
+      return d >= today && d.getFullYear() <= maxYear;
+    }, `Travel date must be today or in the future (and within the next 5 years)`),
   duration: z.string().trim().max(60).optional().nullable(),
   dob: z
     .string()
@@ -109,6 +113,21 @@ export async function getApplication(id: string) {
     .select("*")
     .eq("id", id)
     .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+// PATCH /api/applications/[id]/status — staff/admin only (RLS enforced)
+export async function updateApplicationStatus(
+  id: string,
+  status: "pending" | "under_review" | "docs_missing" | "approved" | "rejected",
+) {
+  const { data, error } = await supabase
+    .from("visa_applications")
+    .update({ status })
+    .eq("id", id)
+    .select()
+    .single();
   if (error) throw error;
   return data;
 }
