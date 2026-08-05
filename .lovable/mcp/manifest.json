@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://klhvxeixobvjbmjjevpb.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "uzair-visa-consutant",
+      "version": "0.1.0",
+      "title": "Uzair_Visa_Consutant"
+    },
+    "tools": [
+      {
+        "name": "list_applications",
+        "title": "List visa applications",
+        "description": "List visa applications visible to the signed-in user. Clients see their own; staff and admins see all.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "under_review",
+                "docs_missing",
+                "approved",
+                "rejected"
+              ],
+              "description": "Optional status filter."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Max rows to return (default 25)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_application",
+        "title": "Get visa application",
+        "description": "Fetch the full details of one visa application by its id.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Application id (UUID)."
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "create_application",
+        "title": "Create visa application",
+        "description": "Submit a new visa application for the signed-in user.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "full_name": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 100,
+              "description": "Applicant full name."
+            },
+            "passport_number": {
+              "type": "string",
+              "minLength": 6,
+              "maxLength": 9,
+              "pattern": "^[A-Za-z0-9]+$",
+              "description": "Passport number, 6-9 alphanumeric characters."
+            },
+            "destination_country": {
+              "type": "string",
+              "enum": [
+                "Italy",
+                "Portugal",
+                "Greece",
+                "Spain"
+              ],
+              "description": "Destination country."
+            },
+            "visa_type": {
+              "type": "string",
+              "enum": [
+                "Study Visa",
+                "Work Visa",
+                "Family Reunion",
+                "Tourist Visa",
+                "Business Visa",
+                "Residence Visa"
+              ],
+              "description": "Visa category."
+            },
+            "travel_date": {
+              "type": "string",
+              "description": "Intended travel date, YYYY-MM-DD (today or later)."
+            },
+            "nationality": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "purpose": {
+              "type": "string",
+              "maxLength": 1000
+            }
+          },
+          "required": [
+            "full_name",
+            "passport_number",
+            "destination_country",
+            "visa_type"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "update_application_status",
+        "title": "Update application status",
+        "description": "Change the status of a visa application. Only staff and admin users are permitted; clients are rejected by access rules.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Application id (UUID)."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "under_review",
+                "docs_missing",
+                "approved",
+                "rejected"
+              ],
+              "description": "New status."
+            }
+          },
+          "required": [
+            "id",
+            "status"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_documents",
+        "title": "List uploaded documents",
+        "description": "List document records visible to the signed-in user (metadata only, no file contents). Optionally filter by application.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "application_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Only documents linked to this application."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "description": "Max rows to return (default 25)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

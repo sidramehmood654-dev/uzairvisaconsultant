@@ -34,6 +34,7 @@ import ClientApply from "./pages/client/ClientApply";
 import ClientDocuments from "./pages/client/ClientDocuments";
 import ClientTrack from "./pages/client/ClientTrack";
 import ClientHistory from "./pages/client/ClientHistory";
+import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,7 @@ const App = () => (
               <Route path="/process" element={<ProcessPage />} />
               <Route path="/testimonials" element={<TestimonialsPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
 
               {/* Client portal (protected) */}
               <Route path="/client/dashboard" element={<ProtectedRoute><ClientDashboard /></ProtectedRoute>} />

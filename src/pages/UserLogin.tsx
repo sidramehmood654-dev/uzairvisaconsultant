@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,8 +7,13 @@ import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 
+const safeNext = (value: string | null) =>
+  value && value.startsWith("/") && !value.startsWith("//") ? value : "/client/dashboard";
+
 const UserLogin = () => {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const next = safeNext(params.get("next"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,18 +28,21 @@ const UserLogin = () => {
       return;
     }
     toast({ title: "Welcome back", description: "Redirecting..." });
-    navigate("/client/dashboard");
+    navigate(next);
   };
 
   const google = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/client/dashboard" });
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin + next,
+    });
     if (result.error) {
       toast({ title: "Google sign-in failed", description: String(result.error), variant: "destructive" });
       return;
     }
     if (result.redirected) return;
-    navigate("/client/dashboard");
+    navigate(next);
   };
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
