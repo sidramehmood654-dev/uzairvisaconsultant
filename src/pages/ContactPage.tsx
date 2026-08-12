@@ -1,9 +1,10 @@
 import Layout from "@/components/Layout";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { toast } from "@/hooks/use-toast";
+import { createEnquiry } from "@/lib/enquiries";
+
 
 const visaTypesByCountry: Record<string, string[]> = {
   Italy: ["Study Visa", "Family Reunion Visa", "Work Visa", "Tourist / Visit Visa", "Residence Permit", "Business / Investor Visa"],
@@ -13,30 +14,38 @@ const visaTypesByCountry: Record<string, string[]> = {
 };
 
 const ContactPage = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
   const { ref, isVisible } = useScrollAnimation();
 
-  const isSignedIn = typeof window !== "undefined" && sessionStorage.getItem("uvc_user") === "1";
   const availableVisaTypes = formData.country ? visaTypesByCountry[formData.country] || [] : [];
 
   const handleCountryChange = (country: string) => {
     setFormData({ ...formData, country, visa: "" });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isSignedIn) {
-      toast({
-        title: "Sign in required",
-        description: "Please create an account or sign in to submit your enquiry.",
+    setSubmitting(true);
+    try {
+      await createEnquiry({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        country: formData.country,
+        visa_type: formData.visa,
+        message: formData.message,
       });
-      navigate("/signup");
-      return;
+      toast({ title: "Thank you!", description: "Your enquiry has been received. We will contact you soon." });
+      setFormData({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
+    } catch (err: any) {
+      const msg = err?.errors?.[0]?.message ?? err?.message ?? "Please try again.";
+      toast({ title: "Could not send enquiry", description: msg, variant: "destructive" });
+    } finally {
+      setSubmitting(false);
     }
-    toast({ title: "Thank you!", description: "We will contact you soon." });
-    setFormData({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
   };
+
 
   return (
     <Layout>
@@ -113,15 +122,14 @@ const ContactPage = () => {
                 ))}
               </select>
               <textarea placeholder="Tell us about your requirements..." rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none transition-all" />
-              <button type="submit" className="w-full flex items-center justify-center gap-2 bg-gradient-gold text-primary-foreground py-4 rounded-lg font-semibold hover:shadow-[0_0_30px_-5px_hsl(35_85%_55%_/_0.5)] hover:scale-[1.02] transition-all duration-300">
+              <button type="submit" disabled={submitting} className="w-full flex items-center justify-center gap-2 bg-gradient-gold text-primary-foreground py-4 rounded-lg font-semibold hover:shadow-[0_0_30px_-5px_hsl(35_85%_55%_/_0.5)] hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed">
                 <Send className="w-4 h-4" />
-                {isSignedIn ? "Send Message" : "Sign in to Send Message"}
+                {submitting ? "Sending..." : "Send Message"}
               </button>
-              {!isSignedIn && (
-                <p className="text-xs text-muted-foreground text-center">
-                  Browsing is free — an account is only needed when submitting an enquiry.
-                </p>
-              )}
+              <p className="text-xs text-muted-foreground text-center">
+                No account needed — our team will reply to your email.
+              </p>
+
             </form>
           </div>
         </div>

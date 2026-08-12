@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { toast } from "@/hooks/use-toast";
+import { createEnquiry } from "@/lib/enquiries";
 
 const visaTypesByCountry: Record<string, string[]> = {
   Italy: ["Study Visa", "Family Reunion Visa", "Work Visa", "Tourist / Visit Visa", "Residence Permit", "Business / Investor Visa"],
@@ -11,6 +13,7 @@ const visaTypesByCountry: Record<string, string[]> = {
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
   const { ref, isVisible } = useScrollAnimation();
 
   const availableVisaTypes = formData.country ? visaTypesByCountry[formData.country] || [] : [];
@@ -19,11 +22,28 @@ const ContactSection = () => {
     setFormData({ ...formData, country, visa: "" });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you! We will contact you soon.");
-    setFormData({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
+    setSubmitting(true);
+    try {
+      await createEnquiry({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        country: formData.country,
+        visa_type: formData.visa,
+        message: formData.message,
+      });
+      toast({ title: "Thank you!", description: "Your enquiry has been received. We will contact you soon." });
+      setFormData({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
+    } catch (err: any) {
+      const msg = err?.errors?.[0]?.message ?? err?.message ?? "Please try again.";
+      toast({ title: "Could not send enquiry", description: msg, variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
   };
+
 
   return (
     <section id="contact" className="py-24">
@@ -84,10 +104,11 @@ const ContactSection = () => {
               ))}
             </select>
             <textarea placeholder="Tell us about your requirements..." rows={4} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none transition-all" />
-            <button type="submit" className="w-full flex items-center justify-center gap-2 bg-gradient-gold text-primary-foreground py-4 rounded-lg font-semibold hover:shadow-[0_0_30px_-5px_hsl(35_85%_55%_/_0.5)] hover:scale-[1.02] transition-all duration-300">
+            <button type="submit" disabled={submitting} className="w-full flex items-center justify-center gap-2 bg-gradient-gold text-primary-foreground py-4 rounded-lg font-semibold hover:shadow-[0_0_30px_-5px_hsl(35_85%_55%_/_0.5)] hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed">
               <Send className="w-4 h-4" />
-              Send Message
+              {submitting ? "Sending..." : "Send Message"}
             </button>
+
           </form>
         </div>
       </div>
