@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_enquiries: {
+        Row: {
+          country: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          staff_note: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+          visa_type: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          staff_note?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          visa_type?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          staff_note?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          visa_type?: string | null
+        }
+        Relationships: []
+      }
       documents: {
         Row: {
           application_id: string | null
