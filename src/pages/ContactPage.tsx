@@ -1,9 +1,10 @@
 import Layout from "@/components/Layout";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { toast } from "@/hooks/use-toast";
+import { createEnquiry } from "@/lib/enquiries";
+
 
 const visaTypesByCountry: Record<string, string[]> = {
   Italy: ["Study Visa", "Family Reunion Visa", "Work Visa", "Tourist / Visit Visa", "Residence Permit", "Business / Investor Visa"],
