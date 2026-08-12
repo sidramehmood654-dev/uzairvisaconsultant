@@ -13,30 +13,38 @@ const visaTypesByCountry: Record<string, string[]> = {
 };
 
 const ContactPage = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
   const { ref, isVisible } = useScrollAnimation();
 
-  const isSignedIn = typeof window !== "undefined" && sessionStorage.getItem("uvc_user") === "1";
   const availableVisaTypes = formData.country ? visaTypesByCountry[formData.country] || [] : [];
 
   const handleCountryChange = (country: string) => {
     setFormData({ ...formData, country, visa: "" });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isSignedIn) {
-      toast({
-        title: "Sign in required",
-        description: "Please create an account or sign in to submit your enquiry.",
+    setSubmitting(true);
+    try {
+      await createEnquiry({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        country: formData.country,
+        visa_type: formData.visa,
+        message: formData.message,
       });
-      navigate("/signup");
-      return;
+      toast({ title: "Thank you!", description: "Your enquiry has been received. We will contact you soon." });
+      setFormData({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
+    } catch (err: any) {
+      const msg = err?.errors?.[0]?.message ?? err?.message ?? "Please try again.";
+      toast({ title: "Could not send enquiry", description: msg, variant: "destructive" });
+    } finally {
+      setSubmitting(false);
     }
-    toast({ title: "Thank you!", description: "We will contact you soon." });
-    setFormData({ name: "", email: "", phone: "", visa: "", country: "", message: "" });
   };
+
 
   return (
     <Layout>
