@@ -121,15 +121,14 @@ const ContactPage = () => {
                 ))}
               </select>
               <textarea placeholder="Tell us about your requirements..." rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none transition-all" />
-              <button type="submit" className="w-full flex items-center justify-center gap-2 bg-gradient-gold text-primary-foreground py-4 rounded-lg font-semibold hover:shadow-[0_0_30px_-5px_hsl(35_85%_55%_/_0.5)] hover:scale-[1.02] transition-all duration-300">
+              <button type="submit" disabled={submitting} className="w-full flex items-center justify-center gap-2 bg-gradient-gold text-primary-foreground py-4 rounded-lg font-semibold hover:shadow-[0_0_30px_-5px_hsl(35_85%_55%_/_0.5)] hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed">
                 <Send className="w-4 h-4" />
-                {isSignedIn ? "Send Message" : "Sign in to Send Message"}
+                {submitting ? "Sending..." : "Send Message"}
               </button>
-              {!isSignedIn && (
-                <p className="text-xs text-muted-foreground text-center">
-                  Browsing is free — an account is only needed when submitting an enquiry.
-                </p>
-              )}
+              <p className="text-xs text-muted-foreground text-center">
+                No account needed — our team will reply to your email.
+              </p>
+
             </form>
           </div>
         </div>
