@@ -83,3 +83,14 @@ export async function updateDocumentStatus(id: string, status: DocStatus, note?:
     .eq("id", id);
   if (error) throw error;
 }
+
+// Staff/Admin: all documents belonging to an applicant (RLS allows staff/admin)
+export async function listDocumentsForApplicant(userId: string) {
+  const { data, error } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as DocumentRow[];
+}

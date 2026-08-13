@@ -27,6 +27,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { listAllApplications, updateApplicationStatus } from "@/lib/applications";
 import { useAuth } from "@/hooks/useAuth";
+import StaffDocumentReview from "@/components/StaffDocumentReview";
+
 
 type DbStatus = "pending" | "under_review" | "docs_missing" | "approved" | "rejected";
 
@@ -383,6 +385,9 @@ const StaffDashboard = () => {
                   ))}
                 </div>
               </div>
+
+              <StaffDocumentReview userId={selected.user_id} applicationId={selected.id} />
+
 
               <div className="mt-5">
                 <label className="text-xs uppercase tracking-widest text-muted-foreground">Internal Note</label>
