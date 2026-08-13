@@ -384,6 +384,9 @@ const StaffDashboard = () => {
                 </div>
               </div>
 
+              <StaffDocumentReview userId={selected.user_id} applicationId={selected.id} />
+
+
               <div className="mt-5">
                 <label className="text-xs uppercase tracking-widest text-muted-foreground">Internal Note</label>
                 <Textarea rows={3} value={reviewNote} onChange={(e) => setReviewNote(e.target.value)} placeholder="Add a note about this application…" className="mt-2" />
