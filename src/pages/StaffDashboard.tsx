@@ -27,6 +27,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { listAllApplications, updateApplicationStatus } from "@/lib/applications";
 import { useAuth } from "@/hooks/useAuth";
+import StaffDocumentReview from "@/components/StaffDocumentReview";
+
 
 type DbStatus = "pending" | "under_review" | "docs_missing" | "approved" | "rejected";
 
