@@ -59,6 +59,45 @@ export type Database = {
         }
         Relationships: []
       }
+      countries: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          fee: number
+          flag: string
+          id: string
+          name: string
+          processing_days: string
+          sort_order: number
+          updated_at: string
+          visa_types: string[]
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          fee?: number
+          flag?: string
+          id?: string
+          name: string
+          processing_days?: string
+          sort_order?: number
+          updated_at?: string
+          visa_types?: string[]
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          fee?: number
+          flag?: string
+          id?: string
+          name?: string
+          processing_days?: string
+          sort_order?: number
+          updated_at?: string
+          visa_types?: string[]
+        }
+        Relationships: []
+      }
       documents: {
         Row: {
           application_id: string | null
