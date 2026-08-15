@@ -58,6 +58,10 @@ const App = () => (
               <Route path="/process" element={<ProcessPage />} />
               <Route path="/testimonials" element={<TestimonialsPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/faq" element={<FaqPage />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/refund" element={<RefundPage />} />
               <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
 
               {/* Client portal (protected) */}
