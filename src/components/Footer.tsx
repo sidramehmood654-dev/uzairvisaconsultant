@@ -1,6 +1,13 @@
-import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.jpg";
+
+const socials = [
+  { Icon: Facebook, href: "https://www.facebook.com/share/1DZrSsE2MK/", label: "Facebook", color: "#1877F2", hoverBg: "hover:bg-[#1877F2]" },
+  { Icon: Instagram, href: "https://www.instagram.com/uzair_consultancy_and_co.5?igsh=MTRsdWV3Y3h2M2RsaA==", label: "Instagram", color: "#E4405F", hoverBg: "hover:bg-[#E4405F]" },
+  { Icon: Twitter, href: "https://x.com", label: "Twitter", color: "#1DA1F2", hoverBg: "hover:bg-[#1DA1F2]" },
+  { Icon: Linkedin, href: "https://www.linkedin.com", label: "LinkedIn", color: "#0A66C2", hoverBg: "hover:bg-[#0A66C2]" },
+];
 
 const Footer = () => {
   return (
@@ -9,7 +16,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img src={logo} alt="UC" className="h-10 w-10 rounded-full object-cover" />
+              <img src={logo} alt="Uzair Visa Consultancy" className="h-10 w-10 rounded-full object-cover" />
               <div>
                 <span className="text-lg font-semibold text-gradient-gold block leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
                   Uzair Visa
@@ -21,9 +28,16 @@ const Footer = () => {
               Your trusted partner for European visa services. Specializing in Italy, Portugal, Greece & Spain.
             </p>
             <div className="flex gap-3 mt-6">
-              {[Facebook, Instagram, Twitter, Linkedin].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center hover:bg-primary/20 transition-colors">
-                  <Icon className="w-4 h-4 text-muted-foreground" />
+              {socials.map(({ Icon, href, label, color, hoverBg }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className={`w-12 h-12 rounded-full bg-secondary flex items-center justify-center ${hoverBg} hover:scale-110 transition-all duration-300`}
+                >
+                  <Icon className="w-6 h-6" style={{ color }} />
                 </a>
               ))}
             </div>
@@ -58,8 +72,16 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border pt-8 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Uzair Visa Consultancy. All rights reserved.
+        <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-muted-foreground text-center md:text-left">
+            © {new Date().getFullYear()} Uzair Visa Consultancy. All rights reserved.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+            <Link to="/faq" className="hover:text-primary transition-colors">FAQ</Link>
+            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-primary transition-colors">Terms & Conditions</Link>
+            <Link to="/refund" className="hover:text-primary transition-colors">Refund Policy</Link>
+          </div>
         </div>
       </div>
     </footer>
