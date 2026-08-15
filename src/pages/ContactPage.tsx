@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { toast } from "@/hooks/use-toast";
 import { createEnquiry } from "@/lib/enquiries";
+import Seo from "@/components/Seo";
 
 
 const visaTypesByCountry: Record<string, string[]> = {
@@ -49,6 +50,7 @@ const ContactPage = () => {
 
   return (
     <Layout>
+      <Seo title="Contact Us | Uzair Visa Consultancy" description="Get in touch for a free visa consultation. Call, WhatsApp or send an enquiry and our advisors will respond quickly." path="/contact" />
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />

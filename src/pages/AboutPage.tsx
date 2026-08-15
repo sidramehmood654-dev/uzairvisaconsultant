@@ -4,6 +4,7 @@ import { CheckCircle2, Users, Clock, Globe, Target, Handshake } from "lucide-rea
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CircularProgress from "@/components/CircularProgress";
 import { Award, Shield, Headphones } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const values = [
   { icon: Target, title: "Expert Focus", desc: "We exclusively handle European visas for Italy, Portugal, Greece, and Spain — giving us unmatched expertise." },
@@ -21,6 +22,7 @@ const AboutPage = () => {
 
   return (
     <Layout>
+      <Seo title="About Us | Uzair Visa Consultancy" description="Learn about Uzair Visa Consultancy — experienced advisors helping applicants secure European study, work and family visas." path="/about" />
       {/* Hero Banner */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">

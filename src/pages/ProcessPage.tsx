@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import { Link } from "react-router-dom";
 import { MessageSquare, FileText, Send, CheckCircle, ArrowRight, Clock, Shield, Headphones } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import Seo from "@/components/Seo";
 
 const steps = [
   {
@@ -35,6 +36,7 @@ const ProcessPage = () => {
 
   return (
     <Layout>
+      <Seo title="Our Visa Process | Uzair Visa Consultancy" description="A clear step-by-step visa process: consultation, document preparation, application submission and follow-up until decision." path="/process" />
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />

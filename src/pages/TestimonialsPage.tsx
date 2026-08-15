@@ -4,6 +4,7 @@ import { Star, Quote, ArrowRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import CircularProgress from "@/components/CircularProgress";
 import { Award, Users, ThumbsUp } from "lucide-react";
+import Seo from "@/components/Seo";
 
 const testimonials = [
   {
@@ -51,6 +52,7 @@ const TestimonialsPage = () => {
 
   return (
     <Layout>
+      <Seo title="Client Testimonials | Uzair Visa Consultancy" description="Read what clients say about their visa journey with Uzair Visa Consultancy across Italy, Portugal, Greece and Spain." path="/testimonials" />
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
