@@ -35,6 +35,10 @@ import ClientDocuments from "./pages/client/ClientDocuments";
 import ClientTrack from "./pages/client/ClientTrack";
 import ClientHistory from "./pages/client/ClientHistory";
 import OAuthConsent from "./pages/OAuthConsent";
+import FaqPage from "./pages/FaqPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
+import RefundPage from "./pages/RefundPage";
 
 const queryClient = new QueryClient();
 
