@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import Seo from "@/components/Seo";
 
 const RefundPage = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -41,6 +42,7 @@ const RefundPage = () => {
 
   return (
     <Layout>
+      <Seo title="Refund Policy | Uzair Visa Consultancy" description="Our refund and cancellation policy for consultancy fees and visa application services." path="/refund" />
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />

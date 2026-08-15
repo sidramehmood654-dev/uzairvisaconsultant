@@ -12,3 +12,12 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /staff
+Disallow: /staff/
+Disallow: /client/
+Disallow: /login
+Disallow: /signup
+
+Sitemap: https://uzairvisaconsultant.lovable.app/sitemap.xml

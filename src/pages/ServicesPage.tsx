@@ -8,6 +8,7 @@ import workImg from "@/assets/work-visa.jpg";
 import touristImg from "@/assets/tourist-visa.jpg";
 import residenceImg from "@/assets/residence-visa.jpg";
 import businessImg from "@/assets/business-visa.jpg";
+import Seo from "@/components/Seo";
 
 const services = [
   {
@@ -71,6 +72,7 @@ const ServicesPage = () => {
 
   return (
     <Layout>
+      <Seo title="Visa Services | Study, Work, Family & Tourist Visas" description="Study, family reunion, work, tourist, residence permit and business visa services with document review and end-to-end guidance." path="/services" />
       {/* Hero */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">

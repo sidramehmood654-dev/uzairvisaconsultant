@@ -6,6 +6,7 @@ import italyImg from "@/assets/italy.jpg";
 import portugalImg from "@/assets/portugal.jpg";
 import greeceImg from "@/assets/greece.jpg";
 import spainImg from "@/assets/spain.jpg";
+import Seo from "@/components/Seo";
 
 const countries = [
   {
@@ -67,6 +68,7 @@ const DestinationsPage = () => {
 
   return (
     <Layout>
+      <Seo title="Destinations | Italy, Portugal, Greece & Spain Visas" description="Explore visa options, fees and processing times for Italy, Portugal, Greece and Spain with Uzair Visa Consultancy." path="/destinations" />
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />

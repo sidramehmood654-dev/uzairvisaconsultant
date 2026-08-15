@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import Seo from "@/components/Seo";
 
 const TermsPage = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -53,6 +54,7 @@ const TermsPage = () => {
 
   return (
     <Layout>
+      <Seo title="Terms of Service | Uzair Visa Consultancy" description="The terms and conditions governing use of Uzair Visa Consultancy services and website." path="/terms" />
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />

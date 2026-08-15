@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import Seo from "@/components/Seo";
 
 const PrivacyPage = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -45,6 +46,7 @@ const PrivacyPage = () => {
 
   return (
     <Layout>
+      <Seo title="Privacy Policy | Uzair Visa Consultancy" description="How Uzair Visa Consultancy collects, uses, stores and protects your personal data and application documents." path="/privacy" />
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
