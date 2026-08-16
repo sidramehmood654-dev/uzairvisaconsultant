@@ -61,38 +61,56 @@ export type Database = {
       }
       countries: {
         Row: {
+          capital: string
           created_at: string
+          description: string
           enabled: boolean
           fee: number
           flag: string
+          highlights: string[]
           id: string
+          image_key: string
           name: string
           processing_days: string
+          slug: string | null
           sort_order: number
+          summary: string
           updated_at: string
           visa_types: string[]
         }
         Insert: {
+          capital?: string
           created_at?: string
+          description?: string
           enabled?: boolean
           fee?: number
           flag?: string
+          highlights?: string[]
           id?: string
+          image_key?: string
           name: string
           processing_days?: string
+          slug?: string | null
           sort_order?: number
+          summary?: string
           updated_at?: string
           visa_types?: string[]
         }
         Update: {
+          capital?: string
           created_at?: string
+          description?: string
           enabled?: boolean
           fee?: number
           flag?: string
+          highlights?: string[]
           id?: string
+          image_key?: string
           name?: string
           processing_days?: string
+          slug?: string | null
           sort_order?: number
+          summary?: string
           updated_at?: string
           visa_types?: string[]
         }
@@ -185,6 +203,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      services: {
+        Row: {
+          countries: string[]
+          created_at: string
+          description: string
+          enabled: boolean
+          features: string[]
+          icon: string
+          id: string
+          image_key: string
+          slug: string
+          sort_order: number
+          summary: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          countries?: string[]
+          created_at?: string
+          description?: string
+          enabled?: boolean
+          features?: string[]
+          icon?: string
+          id?: string
+          image_key?: string
+          slug: string
+          sort_order?: number
+          summary?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          countries?: string[]
+          created_at?: string
+          description?: string
+          enabled?: boolean
+          features?: string[]
+          icon?: string
+          id?: string
+          image_key?: string
+          slug?: string
+          sort_order?: number
+          summary?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
