@@ -3,7 +3,13 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface Country {
   id: string;
+  slug: string;
   name: string;
+  capital: string;
+  summary: string;
+  description: string;
+  highlights: string[];
+  image_key: string;
   flag: string;
   enabled: boolean;
   visa_types: string[];
@@ -69,4 +75,15 @@ export async function updateCountry(id: string, patch: Partial<CountryInput>): P
 export async function deleteCountry(id: string): Promise<void> {
   const { error } = await supabase.from("countries").delete().eq("id", id);
   if (error) throw error;
+}
+
+export async function getCountryBySlug(slug: string): Promise<Country | null> {
+  const { data, error } = await supabase
+    .from("countries")
+    .select("*")
+    .eq("slug", slug)
+    .eq("enabled", true)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as Country) ?? null;
 }
