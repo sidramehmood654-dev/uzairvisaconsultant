@@ -12,6 +12,8 @@ import Index from "./pages/Index";
 import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import DestinationsPage from "./pages/DestinationsPage";
+import CountryDetailPage from "./pages/CountryDetailPage";
+import ServiceDetailPage from "./pages/ServiceDetailPage";
 import ProcessPage from "./pages/ProcessPage";
 import TestimonialsPage from "./pages/TestimonialsPage";
 import ContactPage from "./pages/ContactPage";
@@ -59,6 +61,8 @@ const App = () => (
               <Route path="/about" element={<AboutPage />} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/destinations" element={<DestinationsPage />} />
+              <Route path="/destinations/:slug" element={<CountryDetailPage />} />
+              <Route path="/services/:slug" element={<ServiceDetailPage />} />
               <Route path="/process" element={<ProcessPage />} />
               <Route path="/testimonials" element={<TestimonialsPage />} />
               <Route path="/contact" element={<ContactPage />} />
