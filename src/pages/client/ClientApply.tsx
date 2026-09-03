@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { createApplication, visaApplicationSchema } from "@/lib/applications";
+import Turnstile from "@/components/Turnstile";
 import { useAuth } from "@/hooks/useAuth";
 
 const stepsList = ["Visa Details", "Personal Info", "Background", "Review"];
@@ -17,6 +18,7 @@ const ClientApply = () => {
   const { user } = useAuth();
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState({
     country: "",
@@ -99,7 +101,7 @@ const ClientApply = () => {
   const submit = async () => {
     setSubmitting(true);
     try {
-      await createApplication(buildPayload());
+      await createApplication(buildPayload(), captchaToken);
       toast.success("Application submitted", { description: "Your consultant will review it shortly." });
       navigate("/client/track");
     } catch (e: any) {
@@ -240,6 +242,7 @@ const ClientApply = () => {
                   After submission, you'll be able to upload supporting documents in <strong>My Documents</strong>.
                 </p>
               </div>
+              <Turnstile onVerify={setCaptchaToken} onExpire={() => setCaptchaToken("")} className="flex justify-center pt-1" />
             </>
           )}
 
@@ -254,7 +257,7 @@ const ClientApply = () => {
                 Continue <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             ) : (
-              <Button onClick={submit} disabled={submitting} className="flex-1 bg-gradient-gold text-primary-foreground font-semibold">
+              <Button onClick={submit} disabled={submitting || !captchaToken} className="flex-1 bg-gradient-gold text-primary-foreground font-semibold">
                 {submitting ? "Submitting..." : "Submit Application"}
               </Button>
             )}
