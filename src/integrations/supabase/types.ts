@@ -166,6 +166,27 @@ export type Database = {
           },
         ]
       }
+      form_submission_log: {
+        Row: {
+          created_at: string
+          form: string
+          id: string
+          ip_hash: string
+        }
+        Insert: {
+          created_at?: string
+          form: string
+          id?: string
+          ip_hash: string
+        }
+        Update: {
+          created_at?: string
+          form?: string
+          id?: string
+          ip_hash?: string
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount: number
