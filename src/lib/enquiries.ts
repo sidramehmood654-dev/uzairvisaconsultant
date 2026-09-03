@@ -26,26 +26,32 @@ export const enquirySchema = z.object({
 
 export type EnquiryInput = z.infer<typeof enquirySchema>;
 
-export async function createEnquiry(input: unknown) {
+// Submissions go through the secured edge function: it verifies the Turnstile
+// captcha, enforces the per-IP rate limit and re-validates every field server-side.
+export async function createEnquiry(input: unknown, captchaToken?: string) {
   const parsed = enquirySchema.parse(input);
-  const { data: { user } } = await supabase.auth.getUser();
+  if (!captchaToken) throw new Error("Please complete the captcha before submitting.");
 
-  const { data, error } = await supabase
-    .from("contact_enquiries")
-    .insert({
-      user_id: user?.id ?? null,
-      name: parsed.name,
-      email: parsed.email,
-      phone: parsed.phone || null,
-      country: parsed.country || null,
-      visa_type: parsed.visa_type || null,
-      message: parsed.message || null,
-    })
-    .select()
-    .single();
-  if (error) throw error;
+  const { data, error } = await supabase.functions.invoke("submit-enquiry", {
+    body: { ...parsed, captchaToken },
+  });
+
+  if (error) {
+    let message = "Could not send your enquiry. Please try again.";
+    const res = (error as any).context as Response | undefined;
+    if (res && typeof res.json === "function") {
+      try {
+        const body = await res.json();
+        if (body?.error) message = body.error;
+      } catch {
+        /* keep default */
+      }
+    }
+    throw new Error(message);
+  }
   return data;
 }
+
 
 export async function listEnquiries() {
   const { data, error } = await supabase
