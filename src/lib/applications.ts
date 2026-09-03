@@ -55,36 +55,46 @@ export const visaApplicationSchema = z.object({
 
 export type VisaApplicationInput = z.infer<typeof visaApplicationSchema>;
 
-// POST /api/applications — create
-export async function createApplication(input: unknown) {
+// POST /api/applications — create (via secured edge function: captcha + rate limit
+// + server-side revalidation, then a service-role insert scoped to the signed-in user)
+export async function createApplication(input: unknown, captchaToken?: string) {
   const parsed = visaApplicationSchema.parse(input); // throws ZodError if invalid
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error("Not authenticated");
+  if (!captchaToken) throw new Error("Please complete the captcha before submitting.");
 
-  const payload = {
-    full_name: parsed.full_name,
-    passport_number: parsed.passport_number.toUpperCase(),
-    destination_country: parsed.destination_country as string,
-    visa_type: parsed.visa_type as string,
-    travel_date: parsed.travel_date ?? null,
-    duration: parsed.duration ?? null,
-    dob: parsed.dob ?? null,
-    nationality: parsed.nationality ?? null,
-    address: parsed.address ?? null,
-    occupation: parsed.occupation ?? null,
-    employer: parsed.employer ?? null,
-    purpose: parsed.purpose ?? null,
-    user_id: user.id,
-  };
+  const { data, error } = await supabase.functions.invoke("submit-application", {
+    body: {
+      full_name: parsed.full_name,
+      passport_number: parsed.passport_number.toUpperCase(),
+      destination_country: parsed.destination_country as string,
+      visa_type: parsed.visa_type as string,
+      travel_date: parsed.travel_date ?? null,
+      duration: parsed.duration ?? null,
+      dob: parsed.dob ?? null,
+      nationality: parsed.nationality ?? null,
+      address: parsed.address ?? null,
+      occupation: parsed.occupation ?? null,
+      employer: parsed.employer ?? null,
+      purpose: parsed.purpose ?? null,
+      captchaToken,
+    },
+  });
 
-  const { data, error } = await supabase
-    .from("visa_applications")
-    .insert(payload)
-    .select()
-    .single();
-  if (error) throw error;
+  if (error) {
+    let message = "Could not submit your application. Please try again.";
+    const res = (error as any).context as Response | undefined;
+    if (res && typeof res.json === "function") {
+      try {
+        const body = await res.json();
+        if (body?.error) message = body.error;
+      } catch {
+        /* keep default */
+      }
+    }
+    throw new Error(message);
+  }
   return data;
 }
+
 
 // GET /api/applications — list current user's apps (RLS scopes to own rows)
 export async function listMyApplications() {
