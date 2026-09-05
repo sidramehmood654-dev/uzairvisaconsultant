@@ -20,4 +20,4 @@ Disallow: /client/
 Disallow: /login
 Disallow: /signup
 
-Sitemap: https://uzairvisaconsultant.lovable.app/sitemap.xml
+Sitemap: https://uzairvisaconsultant.vercel.app/sitemap.xml
