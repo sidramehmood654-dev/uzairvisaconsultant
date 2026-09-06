@@ -9,7 +9,12 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-const FROM = "Uzair Visa Consultancy <noreply@mail.uzairvisaconsultant.com>";
+// Set the EMAIL_FROM secret to your verified sender once your domain is verified in Resend,
+// e.g. "Uzair Visa Consultancy <noreply@yourdomain.com>".
+// Until then we fall back to Resend's shared test sender, which only delivers
+// to the email address that owns the Resend account.
+const FROM =
+  Deno.env.get("EMAIL_FROM") ?? "Uzair Visa Consultancy <onboarding@resend.dev>";
 const ADMIN_EMAIL = "uzairconsultancy@gmail.com";
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
 
