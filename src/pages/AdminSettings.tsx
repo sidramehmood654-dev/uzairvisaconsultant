@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import EmailTestPanel from "@/components/EmailTestPanel";
 
 const AdminSettings = () => {
   const { toast } = useToast();
@@ -52,6 +53,8 @@ const AdminSettings = () => {
             </Button>
           </CardContent>
         </Card>
+
+        <EmailTestPanel />
       </div>
     </AdminLayout>
   );

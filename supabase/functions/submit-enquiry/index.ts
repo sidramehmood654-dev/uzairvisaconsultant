@@ -9,6 +9,7 @@ import {
   serviceClient,
   verifyTurnstile,
 } from "../_shared/guard.ts";
+import { notify } from "../_shared/notify.ts";
 
 const FORM = "contact_enquiry";
 
@@ -80,6 +81,11 @@ Deno.serve(async (req) => {
     }
 
     await recordSubmission(supabase, FORM, ipHash);
+
+    // Email triggers (do not affect the saved enquiry if they fail)
+    await notify("enquiry_confirmation", { to: input.email, data: { ...input } });
+    await notify("admin_alert", { data: { kind: "enquiry", ...input, id: data.id } });
+
     return json({ id: data.id });
   } catch (e) {
     console.error("submit-enquiry error", e);

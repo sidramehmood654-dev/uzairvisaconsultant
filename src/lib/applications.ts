@@ -139,5 +139,15 @@ export async function updateApplicationStatus(
     .select()
     .single();
   if (error) throw error;
+
+  // Notify the applicant about their new status (never blocks the update)
+  try {
+    await supabase.functions.invoke("send-email", {
+      body: { type: "application_status", data: { id, status } },
+    });
+  } catch (e) {
+    console.error("Status email failed", e);
+  }
+
   return data;
 }
