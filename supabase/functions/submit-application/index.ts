@@ -10,6 +10,7 @@ import {
   serviceClient,
   verifyTurnstile,
 } from "../_shared/guard.ts";
+import { notify } from "../_shared/notify.ts";
 
 const FORM = "visa_application";
 
@@ -131,6 +132,13 @@ Deno.serve(async (req) => {
     }
 
     await recordSubmission(supabase, FORM, ipHash);
+
+    // Email triggers (do not affect the saved application if they fail)
+    if (user.email) {
+      await notify("application_confirmation", { to: user.email, data });
+    }
+    await notify("admin_alert", { data: { kind: "application", ...data, email: user.email } });
+
     return json(data);
   } catch (e) {
     console.error("submit-application error", e);
