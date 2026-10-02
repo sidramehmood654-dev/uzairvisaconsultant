@@ -45,7 +45,7 @@ const AboutPage = () => {
       </section>
 
       {/* Our Story */}
-      <section className="py-16 bg-card">
+      <section className="py-16 bg-card overflow-x-clip">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             <div>
@@ -72,8 +72,8 @@ const AboutPage = () => {
               </Link>
             </div>
             <div ref={statsRef} className={`transition-all duration-700 ${statsVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}>
-              <div className="glass-card rounded-xl p-10 glow-gold">
-                <div className="grid grid-cols-2 gap-8">
+              <div className="glass-card rounded-xl p-4 sm:p-10 glow-gold">
+                <div className="grid grid-cols-2 gap-4 sm:gap-8">
                   <CircularProgress value={100} max={100} label="Visas Approved" displayValue="1000+" icon={<Award className="w-5 h-5" />} delay={0} />
                   <CircularProgress value={4} max={4} label="Countries" displayValue="4" icon={<Globe className="w-5 h-5" />} delay={200} />
                   <CircularProgress value={98} max={100} label="Success Rate" displayValue="98%" icon={<Shield className="w-5 h-5" />} delay={400} />
