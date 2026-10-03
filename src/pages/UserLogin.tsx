@@ -71,17 +71,17 @@ const UserLogin = () => {
 
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground uppercase tracking-wider">Email</label>
+              <label htmlFor="login-email" className="text-xs text-muted-foreground uppercase tracking-wider">Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input type="email" placeholder="you@example.com" className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Input id="login-email" type="email" placeholder="you@example.com" className="pl-10" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground uppercase tracking-wider">Password</label>
+              <label htmlFor="login-password" className="text-xs text-muted-foreground uppercase tracking-wider">Password</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input type="password" placeholder="••••••••" className="pl-10" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <Input id="login-password" type="password" placeholder="••••••••" className="pl-10" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
             </div>
 

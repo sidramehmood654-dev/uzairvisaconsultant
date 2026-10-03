@@ -108,26 +108,44 @@ const ContactPage = () => {
                 Send Us a Message
               </h3>
               <div className="grid sm:grid-cols-2 gap-5">
-                <input type="text" placeholder="Full Name" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
-                <input type="email" placeholder="Email Address" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
+                <div className="space-y-1.5">
+                  <label htmlFor="contact-page-name" className="text-xs text-muted-foreground uppercase tracking-wider">Full Name</label>
+                  <input id="contact-page-name" type="text" placeholder="Full Name" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
+                </div>
+                <div className="space-y-1.5">
+                  <label htmlFor="contact-page-email" className="text-xs text-muted-foreground uppercase tracking-wider">Email</label>
+                  <input id="contact-page-email" type="email" placeholder="Email Address" required value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
+                </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-5">
-                <input type="tel" placeholder="Phone / WhatsApp" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
-                <select value={formData.country} onChange={(e) => handleCountryChange(e.target.value)} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all">
-                  <option value="">Select Destination Country</option>
-                  <option>Italy</option>
-                  <option>Portugal</option>
-                  <option>Greece</option>
-                  <option>Spain</option>
+                <div className="space-y-1.5">
+                  <label htmlFor="contact-page-phone" className="text-xs text-muted-foreground uppercase tracking-wider">Phone / WhatsApp</label>
+                  <input id="contact-page-phone" type="tel" placeholder="Phone / WhatsApp" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all" />
+                </div>
+                <div className="space-y-1.5">
+                  <label htmlFor="contact-page-country" className="text-xs text-muted-foreground uppercase tracking-wider">Country</label>
+                  <select id="contact-page-country" value={formData.country} onChange={(e) => handleCountryChange(e.target.value)} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all">
+                    <option value="">Select Destination Country</option>
+                    <option>Italy</option>
+                    <option>Portugal</option>
+                    <option>Greece</option>
+                    <option>Spain</option>
+                  </select>
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <label htmlFor="contact-page-visa" className="text-xs text-muted-foreground uppercase tracking-wider">Visa Type</label>
+                <select id="contact-page-visa" value={formData.visa} onChange={(e) => setFormData({ ...formData, visa: e.target.value })} disabled={!formData.country} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                  <option value="">{formData.country ? "Select Visa Type" : "Select a country first"}</option>
+                  {availableVisaTypes.map((type) => (
+                    <option key={type}>{type}</option>
+                  ))}
                 </select>
               </div>
-              <select value={formData.visa} onChange={(e) => setFormData({ ...formData, visa: e.target.value })} disabled={!formData.country} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                <option value="">{formData.country ? "Select Visa Type" : "Select a country first"}</option>
-                {availableVisaTypes.map((type) => (
-                  <option key={type}>{type}</option>
-                ))}
-              </select>
-              <textarea placeholder="Tell us about your requirements..." rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none transition-all" />
+              <div className="space-y-1.5">
+                <label htmlFor="contact-page-message" className="text-xs text-muted-foreground uppercase tracking-wider">Message</label>
+                <textarea id="contact-page-message" placeholder="Tell us about your requirements..." rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-secondary border border-border rounded-lg px-4 py-3 text-base md:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none transition-all" />
+              </div>
               <Turnstile onVerify={setCaptchaToken} onExpire={() => setCaptchaToken("")} className="flex justify-center" />
               <button type="submit" disabled={submitting || !captchaToken} className="w-full flex items-center justify-center gap-2 bg-gradient-gold text-primary-foreground py-4 rounded-lg font-semibold hover:shadow-[0_0_30px_-5px_hsl(35_85%_55%_/_0.5)] hover:scale-[1.02] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed">
                 <Send className="w-4 h-4" />

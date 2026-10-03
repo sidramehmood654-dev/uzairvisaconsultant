@@ -69,27 +69,27 @@ const UserSignup = () => {
 
           <form onSubmit={submit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground uppercase tracking-wider">Full Name</label>
-              <Input value={form.fullName} onChange={(e) => update("fullName", e.target.value)} required />
+              <label htmlFor="signup-full-name" className="text-xs text-muted-foreground uppercase tracking-wider">Full Name</label>
+              <Input id="signup-full-name" value={form.fullName} onChange={(e) => update("fullName", e.target.value)} required />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs text-muted-foreground uppercase tracking-wider">Email</label>
-                <Input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required />
+                <label htmlFor="signup-email" className="text-xs text-muted-foreground uppercase tracking-wider">Email</label>
+                <Input id="signup-email" type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs text-muted-foreground uppercase tracking-wider">Phone</label>
-                <Input value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+92 300 0000000" />
+                <label htmlFor="signup-phone" className="text-xs text-muted-foreground uppercase tracking-wider">Phone</label>
+                <Input id="signup-phone" value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="+92 300 0000000" />
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs text-muted-foreground uppercase tracking-wider">Password</label>
-                <Input type="password" value={form.password} onChange={(e) => update("password", e.target.value)} required />
+                <label htmlFor="signup-password" className="text-xs text-muted-foreground uppercase tracking-wider">Password</label>
+                <Input id="signup-password" type="password" value={form.password} onChange={(e) => update("password", e.target.value)} required />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs text-muted-foreground uppercase tracking-wider">Confirm</label>
-                <Input type="password" value={form.confirm} onChange={(e) => update("confirm", e.target.value)} required />
+                <label htmlFor="signup-confirm" className="text-xs text-muted-foreground uppercase tracking-wider">Confirm</label>
+                <Input id="signup-confirm" type="password" value={form.confirm} onChange={(e) => update("confirm", e.target.value)} required />
               </div>
             </div>
 
