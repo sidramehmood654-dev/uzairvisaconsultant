@@ -191,7 +191,7 @@ const HeroSection = () => {
             </div>
 
             {/* Circular Stats */}
-            <div className="grid grid-cols-3 gap-6 max-w-lg mx-auto">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-lg mx-auto">
               <CircularProgress
                 value={4}
                 max={4}
@@ -199,6 +199,7 @@ const HeroSection = () => {
                 displayValue="4"
                 icon={<Globe className="w-5 h-5" />}
                 delay={0}
+                compact
               />
               <CircularProgress
                 value={98}
@@ -207,6 +208,7 @@ const HeroSection = () => {
                 displayValue="98%"
                 icon={<Shield className="w-5 h-5" />}
                 delay={200}
+                compact
               />
               <CircularProgress
                 value={100}
@@ -215,6 +217,7 @@ const HeroSection = () => {
                 displayValue="1000+"
                 icon={<Award className="w-5 h-5" />}
                 delay={400}
+                compact
               />
             </div>
           </div>
