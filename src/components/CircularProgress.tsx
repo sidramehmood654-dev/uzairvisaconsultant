@@ -8,9 +8,10 @@ interface CircularProgressProps {
   displayValue: string;
   icon: React.ReactNode;
   delay?: number;
+  compact?: boolean;
 }
 
-const CircularProgress = ({ value, max, label, displayValue, icon, delay = 0 }: CircularProgressProps) => {
+const CircularProgress = ({ value, max, label, displayValue, icon, delay = 0, compact = false }: CircularProgressProps) => {
   const { ref, isVisible } = useScrollAnimation(0.3);
   const [animatedValue, setAnimatedValue] = useState(0);
   const percentage = (value / max) * 100;
@@ -45,7 +46,7 @@ const CircularProgress = ({ value, max, label, displayValue, icon, delay = 0 }: 
       }`}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <div className="relative w-32 h-32 md:w-36 md:h-36">
+      <div className={`relative ${compact ? "w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36" : "w-32 h-32 md:w-36 md:h-36"}`}>
         <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
           <circle cx="60" cy="60" r="54" fill="none" stroke="hsl(var(--secondary))" strokeWidth="8" />
           <circle
@@ -73,7 +74,7 @@ const CircularProgress = ({ value, max, label, displayValue, icon, delay = 0 }: 
           <span className="text-xl md:text-2xl font-bold text-gradient-gold">{displayValue}</span>
         </div>
       </div>
-      <span className="text-xs text-muted-foreground uppercase tracking-wider mt-3 text-center">{label}</span>
+      <span className={`text-xs text-muted-foreground uppercase tracking-wider text-center ${compact ? "mt-2 sm:mt-3" : "mt-3"}`}>{label}</span>
     </div>
   );
 };
