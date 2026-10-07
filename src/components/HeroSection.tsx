@@ -89,12 +89,14 @@ const HeroSection = () => {
       {/* Navigation arrows */}
       <button
         onClick={prev}
+        aria-label="Previous slide"
         className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all group"
       >
         <ChevronLeft className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
       </button>
       <button
         onClick={next}
+        aria-label="Next slide"
         className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-all group"
       >
         <ChevronRight className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
@@ -181,6 +183,8 @@ const HeroSection = () => {
                 <button
                   key={slide.country}
                   onClick={() => goTo(i, i > current ? 1 : -1)}
+                  aria-label={`Go to slide ${i + 1}: ${slide.country}`}
+                  aria-current={i === current ? "true" : undefined}
                   className={`transition-all duration-500 rounded-full ${
                     i === current
                       ? "w-10 h-3 bg-gradient-gold"
