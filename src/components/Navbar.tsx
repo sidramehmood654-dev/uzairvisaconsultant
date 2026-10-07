@@ -127,14 +127,20 @@ const Navbar = () => {
           >
             {theme === "dark" ? <Sun className="w-4 h-4 text-primary" /> : <Moon className="w-4 h-4 text-primary" />}
           </button>
-          <button onClick={() => setIsOpen(!isOpen)} className="text-foreground">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-foreground"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+          >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-background border-t border-border animate-slide-down">
+        <div id="mobile-menu" className="md:hidden bg-background border-t border-border animate-slide-down">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-3">
             {navLinks.map((link) => (
               <Link
