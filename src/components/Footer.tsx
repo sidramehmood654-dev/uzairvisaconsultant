@@ -45,29 +45,29 @@ const Footer = () => {
 
           <div>
             <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">Services</h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <ul className="space-y-1 md:space-y-3 text-sm text-muted-foreground">
               {["Study Visa", "Family Reunion", "Work Visa", "Tourist Visa", "Residence Permit"].map((s) => (
-                <li key={s}><Link to="/services" className="hover:text-primary transition-colors">{s}</Link></li>
+                <li key={s}><Link to="/services" className="inline-flex items-center min-h-10 md:min-h-0 hover:text-primary transition-colors">{s}</Link></li>
               ))}
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">Countries</h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <ul className="space-y-1 md:space-y-3 text-sm text-muted-foreground">
               {["Italy", "Portugal", "Greece", "Spain"].map((c) => (
-                <li key={c}><Link to="/destinations" className="hover:text-primary transition-colors">{c}</Link></li>
+                <li key={c}><Link to="/destinations" className="inline-flex items-center min-h-10 md:min-h-0 hover:text-primary transition-colors">{c}</Link></li>
               ))}
             </ul>
           </div>
 
           <div>
             <h4 className="font-semibold text-foreground mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
-              <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link to="/process" className="hover:text-primary transition-colors">Our Process</Link></li>
-              <li><Link to="/testimonials" className="hover:text-primary transition-colors">Testimonials</Link></li>
-              <li><Link to="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
+            <ul className="space-y-1 md:space-y-3 text-sm text-muted-foreground">
+              <li><Link to="/about" className="inline-flex items-center min-h-10 md:min-h-0 hover:text-primary transition-colors">About Us</Link></li>
+              <li><Link to="/process" className="inline-flex items-center min-h-10 md:min-h-0 hover:text-primary transition-colors">Our Process</Link></li>
+              <li><Link to="/testimonials" className="inline-flex items-center min-h-10 md:min-h-0 hover:text-primary transition-colors">Testimonials</Link></li>
+              <li><Link to="/contact" className="inline-flex items-center min-h-10 md:min-h-0 hover:text-primary transition-colors">Contact Us</Link></li>
             </ul>
           </div>
         </div>
@@ -76,11 +76,11 @@ const Footer = () => {
           <p className="text-xs text-muted-foreground text-center md:text-left">
             © {new Date().getFullYear()} Uzair Visa Consultancy. All rights reserved.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
-            <Link to="/faq" className="hover:text-primary transition-colors">FAQ</Link>
-            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-primary transition-colors">Terms & Conditions</Link>
-            <Link to="/refund" className="hover:text-primary transition-colors">Refund Policy</Link>
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-0 md:gap-y-2 text-xs text-muted-foreground">
+            <Link to="/faq" className="inline-flex items-center min-h-11 md:min-h-0 hover:text-primary transition-colors">FAQ</Link>
+            <Link to="/privacy" className="inline-flex items-center min-h-11 md:min-h-0 hover:text-primary transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="inline-flex items-center min-h-11 md:min-h-0 hover:text-primary transition-colors">Terms & Conditions</Link>
+            <Link to="/refund" className="inline-flex items-center min-h-11 md:min-h-0 hover:text-primary transition-colors">Refund Policy</Link>
           </div>
         </div>
       </div>
