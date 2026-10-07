@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Phone, Sun, Moon, LogIn, UserPlus, LogOut, LayoutDashboard } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
@@ -6,6 +6,20 @@ import logo from "@/assets/logo.jpg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Close the mobile menu when tapping/clicking outside it (only while open)
+  useEffect(() => {
+    if (!isOpen) return;
+    const handlePointerDown = (e: PointerEvent) => {
+      const target = e.target as Node;
+      if (menuRef.current?.contains(target) || menuButtonRef.current?.contains(target)) return;
+      setIsOpen(false);
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [isOpen]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
@@ -128,6 +142,7 @@ const Navbar = () => {
             {theme === "dark" ? <Sun className="w-4 h-4 text-primary" /> : <Moon className="w-4 h-4 text-primary" />}
           </button>
           <button
+            ref={menuButtonRef}
             onClick={() => setIsOpen(!isOpen)}
             className="text-foreground"
             aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -140,7 +155,7 @@ const Navbar = () => {
       </div>
 
       {isOpen && (
-        <div id="mobile-menu" className="md:hidden bg-background border-t border-border animate-slide-down">
+        <div ref={menuRef} id="mobile-menu" className="md:hidden bg-background border-t border-border animate-slide-down">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-3">
             {navLinks.map((link) => (
               <Link
