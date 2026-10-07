@@ -185,7 +185,7 @@ const HeroSection = () => {
                   onClick={() => goTo(i, i > current ? 1 : -1)}
                   aria-label={`Go to slide ${i + 1}: ${slide.country}`}
                   aria-current={i === current ? "true" : undefined}
-                  className={`transition-all duration-500 rounded-full ${
+                  className={`relative before:absolute before:-inset-y-4 before:-inset-x-1.5 before:content-[''] transition-all duration-500 rounded-full ${
                     i === current
                       ? "w-10 h-3 bg-gradient-gold"
                       : "w-3 h-3 bg-white/30 hover:bg-white/60"

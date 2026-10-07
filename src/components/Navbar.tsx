@@ -136,15 +136,17 @@ const Navbar = () => {
         <div className="flex items-center gap-3 md:hidden">
           <button
             onClick={toggleTheme}
-            className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center"
+            className="w-11 h-11 -m-1 flex items-center justify-center"
             aria-label="Toggle theme"
           >
-            {theme === "dark" ? <Sun className="w-4 h-4 text-primary" /> : <Moon className="w-4 h-4 text-primary" />}
+            <span className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center">
+              {theme === "dark" ? <Sun className="w-4 h-4 text-primary" /> : <Moon className="w-4 h-4 text-primary" />}
+            </span>
           </button>
           <button
             ref={menuButtonRef}
             onClick={() => setIsOpen(!isOpen)}
-            className="text-foreground"
+            className="w-11 h-11 -m-2.5 flex items-center justify-center text-foreground"
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
