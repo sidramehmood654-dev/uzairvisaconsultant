@@ -6,7 +6,7 @@ const WhatsAppButton = () => {
       href="https://wa.me/923426353166"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-28 right-4 sm:bottom-6 sm:right-6 [@media(max-height:500px)]:!bottom-28 z-50 group"
+      className="fixed bottom-28 right-4 sm:bottom-6 sm:right-6 md:bottom-28 [@media(max-height:500px)]:!bottom-28 z-50 group"
       aria-label="Chat on WhatsApp"
     >
       <div className="relative">
