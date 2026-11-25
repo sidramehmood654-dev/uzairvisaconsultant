@@ -20,7 +20,6 @@ const entries: SitemapEntry[] = [
   { path: "/destinations/portugal", changefreq: "monthly", priority: "0.7" },
   { path: "/destinations/greece", changefreq: "monthly", priority: "0.7" },
   { path: "/destinations/spain", changefreq: "monthly", priority: "0.7" },
-  { path: "/destinations/france", changefreq: "monthly", priority: "0.7" },
   { path: "/services/study-visa", changefreq: "monthly", priority: "0.7" },
   { path: "/services/family-reunion-visa", changefreq: "monthly", priority: "0.7" },
   { path: "/services/work-visa", changefreq: "monthly", priority: "0.7" },
