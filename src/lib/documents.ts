@@ -1,4 +1,10 @@
 import { supabase } from "@/integrations/supabase/client";
+import {
+  getFileBasicsError,
+  getFileSignatureError,
+  getUploadCategory,
+  type UploadCategory,
+} from "@/lib/upload-validation";
 
 export type DocStatus = "received" | "pending" | "verified" | "rejected";
 
@@ -18,11 +24,19 @@ export interface DocumentRow {
 
 const BUCKET = "documents";
 
-export async function uploadDocument(file: File, applicationId?: string) {
+export async function uploadDocument(
+  file: File,
+  applicationId?: string,
+  category: UploadCategory = "other-visa-document",
+) {
+  const basicsError = getFileBasicsError(file, category);
+  if (basicsError) throw new Error(basicsError);
+
+  const signatureError = await getFileSignatureError(file, category);
+  if (signatureError) throw new Error(signatureError);
+
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
-
-  if (file.size > 10 * 1024 * 1024) throw new Error("File exceeds 10MB limit");
 
   const safeName = file.name.replace(/[^\w.\-]+/g, "_");
   const path = `${user.id}/${Date.now()}_${safeName}`;
@@ -37,7 +51,7 @@ export async function uploadDocument(file: File, applicationId?: string) {
     .insert({
       user_id: user.id,
       application_id: applicationId ?? null,
-      name: file.name,
+      name: `${getUploadCategory(category)?.label ?? "Visa document"} — ${file.name}`,
       storage_path: path,
       size_bytes: file.size,
       mime_type: file.type || null,
