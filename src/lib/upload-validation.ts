@@ -1,4 +1,4 @@
-import type { Detection, FaceDetector } from "@mediapipe/tasks-vision";
+import type { FaceDetector } from "@mediapipe/tasks-vision";
 import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
@@ -94,6 +94,11 @@ export interface UploadCheckResult {
   message: string;
 }
 
+interface FaceDetectionCandidate {
+  categories: Array<{ score: number }>;
+  boundingBox?: { width: number; height: number };
+}
+
 export function getUploadCategory(category: UploadCategory) {
   return UPLOAD_CATEGORIES.find((item) => item.id === category);
 }
@@ -125,7 +130,7 @@ export async function getFileSignatureError(file: File, category: UploadCategory
   if (basicsError) return basicsError;
 
   const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
-  const bytes = new Uint8Array(await file.slice(0, 8).arrayBuffer());
+  const bytes = new Uint8Array(await readBlobBytes(file.slice(0, 8)));
   const isPdf = bytes.length >= 5 && String.fromCharCode(...bytes.slice(0, 5)) === "%PDF-";
   const isJpeg = bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
   const pngSignature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
@@ -158,7 +163,7 @@ export function assessDocumentType(rawText: string, selectedCategory: UploadCate
 }
 
 export function hasProminentHumanFace(
-  detections: Array<Pick<Detection, "categories" | "boundingBox">>,
+  detections: FaceDetectionCandidate[],
   imageWidth: number,
   imageHeight: number,
 ): boolean {
@@ -168,6 +173,19 @@ export function hasProminentHumanFace(
     const confidence = Math.max(0, ...detection.categories.map((category) => category.score));
     if (!box || confidence < 0.5) return false;
     return (box.width * box.height) / (imageWidth * imageHeight) >= 0.04;
+  });
+}
+
+function readBlobBytes(blob: Blob): Promise<ArrayBuffer> {
+  if (typeof blob.arrayBuffer === "function") return blob.arrayBuffer();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result instanceof ArrayBuffer) resolve(reader.result);
+      else reject(new Error("Could not read the file contents."));
+    };
+    reader.onerror = () => reject(reader.error ?? new Error("Could not read the file contents."));
+    reader.readAsArrayBuffer(blob);
   });
 }
 
@@ -278,12 +296,11 @@ async function inspectApplicantPhoto(file: File): Promise<UploadCheckResult> {
 }
 
 export async function inspectUploadFile(file: File, category: UploadCategory): Promise<UploadCheckResult> {
-  const signatureError = await getFileSignatureError(file, category);
-  if (signatureError) return { status: "invalid", message: signatureError };
-
-  if (category === "applicant-photo") return inspectApplicantPhoto(file);
-
   try {
+    const signatureError = await getFileSignatureError(file, category);
+    if (signatureError) return { status: "invalid", message: signatureError };
+    if (category === "applicant-photo") return await inspectApplicantPhoto(file);
+
     const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
     const text = extension === "pdf" ? await extractPdfText(file) : await recognizeText(file);
     const assessment = assessDocumentType(text, category);
